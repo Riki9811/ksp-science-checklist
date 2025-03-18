@@ -3,9 +3,9 @@
 
 # KSP Science Checklist
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/ksp-science-checklist?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/yourusername/ksp-science-checklist?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/ksp-science-checklist?style=for-the-badge)
+![GitHub stars](https://img.shields.io/github/stars/Riki9811/ksp-science-checklist?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/Riki9811/ksp-science-checklist?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/Riki9811/ksp-science-checklist?style=for-the-badge)
 
 </div>
 
@@ -28,7 +28,7 @@ A **desktop application** built with **Electron** and **JavaScript** to help tra
 #### 1 🔹 Clone the Repository
 
 ```sh
-git clone https://github.com/yourusername/ksp-science-checklist.git
+git clone https://github.com/Riki9811/ksp-science-checklist.git
 cd ksp-science-checklist
 ```
 
