@@ -13,8 +13,8 @@ const createWindow = () => {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		icon: path.join(app.getAppPath(), "assets", "icon.png"),
-		width: 1280,
-		height: 720,
+		width: 1920,
+		height: 1080,
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
@@ -58,14 +58,16 @@ app.on("window-all-closed", () => {
 });
 
 // // Read save files from the KSP install directory
-ipcMain.handle("get-save-files", async () => {
+ipcMain.handle("get-saves", async () => {
 	try {
 		const saves = fs
 			.readdirSync(KSP_INSTALL_DIR)
+			// .filter((folder) => folder.toLowerCase() !== "training" && folder.toLowerCase() !== "scenarios" && folder.toLowerCase() !== "missions")
+			.filter((folder) => !["training", "scenarios", "missions"].includes(folder.toLowerCase()))
 			.map((folder) => path.join(KSP_INSTALL_DIR, folder))
 			.filter((folder) => fs.statSync(folder).isDirectory());
 
-		const saveFiles = saves.flatMap((folder) =>
+		const saveFiles = saves.map((folder) =>
 			fs
 				.readdirSync(folder)
 				.filter((file) => file.endsWith(".sfs"))
