@@ -2,8 +2,13 @@
 :root {
 	--bg-color: #121212;
 	--text-color: #ffffff;
+
 	--sidebar-bg: #1e1e1e;
 	--sidebar-text: #cfcfcf;
+
+	--save-bg: #333333;
+	--save-active-bg: #444;
+
 	--tab-bg: #252525;
 	--tab-active-bg: #333333;
 	--tab-border: #444;
@@ -30,11 +35,29 @@ body {
 	margin: 0;
 	display: flex;
 	height: 100vh;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #app {
 	display: flex;
 	width: 100%;
+}
+
+#theme-toggle {
+	background-color: var(--sidebar-bg);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    font-size: 1.5rem;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 100%;
+    cursor: pointer;
+}
+
+#theme-toggle:hover {
+	background-color: var(--save-bg);
 }
 
 /* Sidebar */
@@ -47,7 +70,7 @@ body {
 }
 
 #sidebar h2 {
-	text-align: center;
+	font-weight: bold;
 }
 
 #save-list {
@@ -55,14 +78,21 @@ body {
 	padding: 0;
 }
 
-#save-list li {
-	padding: 8px;
-	cursor: pointer;
-	border-bottom: 1px solid var(--tab-border);
+#save-list > li {
+	margin: 8px;
+	padding: 20px;
+	border-radius: 20px;
+	background-color: var(--save-bg);
 }
 
-#save-list li:hover {
-	background-color: var(--tab-active-bg);
+#save-list > li > ul > li {
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+#save-list > li > ul > li:hover {
+	background-color: var(--save-active-bg);
 }
 
 /* Main Content */

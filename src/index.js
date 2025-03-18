@@ -1,31 +1,35 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
-const path = require("node:path");
-const fs = require("fs");
+import _SquirrelStartup from "electron-squirrel-startup";
+import { app, BrowserWindow, ipcMain } from "electron";
+import Store from 'electron-store';
+import { readdirSync, statSync } from "fs";
+import { join } from "node:path";
 
-const KSP_INSTALL_DIR = "D:\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
+const store = new Store();
+
+import { KSP_INSTALL_DIR } from "./settings.js";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
+if (_SquirrelStartup) {
 	app.quit();
 }
 
 const createWindow = () => {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
-		icon: path.join(app.getAppPath(), "assets", "icon.png"),
+		icon: join(app.getAppPath(), "assets", "icon.png"),
 		width: 1920,
 		height: 1080,
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
-			preload: path.join(app.getAppPath(), "src", "preload.js")
-		}
+			preload: join(app.getAppPath(), "src", "preload.js"),
+		},
 	});
 
 	// hide the menu
 	mainWindow.setMenuBarVisibility(false);
 	// and load the index.html of the app.
-	mainWindow.loadFile(path.join(app.getAppPath(), "src", "index.html"));
+	mainWindow.loadFile(join(app.getAppPath(), "src", "index.html"));
 
 	// Open the DevTools.
 	mainWindow.webContents.on("did-finish-load", () => {
@@ -57,26 +61,35 @@ app.on("window-all-closed", () => {
 	}
 });
 
-// // Read save files from the KSP install directory
+// Read save files from the KSP install directory
 ipcMain.handle("get-saves", async () => {
 	try {
-		const saves = fs
-			.readdirSync(KSP_INSTALL_DIR)
+		const saves = readdirSync(KSP_INSTALL_DIR)
 			// .filter((folder) => folder.toLowerCase() !== "training" && folder.toLowerCase() !== "scenarios" && folder.toLowerCase() !== "missions")
 			.filter((folder) => !["training", "scenarios", "missions"].includes(folder.toLowerCase()))
-			.map((folder) => path.join(KSP_INSTALL_DIR, folder))
-			.filter((folder) => fs.statSync(folder).isDirectory());
+			.map((folder) => join(KSP_INSTALL_DIR, folder))
+			.filter((folder) => statSync(folder).isDirectory());
 
-		const saveFiles = saves.map((folder) =>
-			fs
-				.readdirSync(folder)
-				.filter((file) => file.endsWith(".sfs"))
-				.map((file) => path.join(folder, file))
-		);
+		const saveFiles = saves
+			.map((folder) =>
+				readdirSync(folder)
+					.filter((file) => file.endsWith(".sfs"))
+					.map((file) => join(folder, file))
+			)
+			.filter((list) => list.length > 0);
 
 		return saveFiles;
 	} catch (error) {
 		console.error("Error reading save files:", error);
 		return [];
 	}
+});
+
+// Get and save theme setting
+ipcMain.handle("get-theme", () => {
+    return store.get("theme", "dark"); // Default to dark mode
+});
+
+ipcMain.on("set-theme", (_, theme) => {
+    store.set("theme", theme);
 });
