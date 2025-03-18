@@ -1,6 +1,6 @@
-(async () => {
-	const saveList = document.getElementById("save-list");
+const saveList = document.getElementById("save-list");
 
+(async () => {
 	if (!saveList) return;
 
 	const saves = await window.api.getSaves();
@@ -25,23 +25,16 @@
 	});
 })();
 
-// Theme button behaviour
+//#region Theme
 const themeToggle = document.getElementById("theme-toggle");
 
-// Load the saved theme setting
-window.electron.getTheme().then((theme) => {
-	if (theme === "light") {
-		document.body.classList.add("light-mode");
-		themeToggle.textContent = "🌙";
-	} else {
-		themeToggle.textContent = "🌞";
-	}
-});
+(async () => {
+    const isDarkMode = await window.darkMode.isDark();
+	themeToggle.innerHTML = isDarkMode ? "🌙" : "🌞";
+})();
 
-themeToggle.addEventListener("click", () => {
-	const isLightMode = document.body.classList.toggle("light-mode");
-	themeToggle.textContent = isLightMode ? "🌙" : "🌞";
-
-	// Save the setting
-	window.electron.setTheme(isLightMode ? "light" : "dark");
+themeToggle.addEventListener("click", async () => {
+    const isDarkMode = await window.darkMode.toggle();
+	themeToggle.innerHTML = isDarkMode ? "🌙" : "🌞";
 });
+//#endregion

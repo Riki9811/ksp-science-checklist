@@ -1,12 +1,10 @@
 import _SquirrelStartup from "electron-squirrel-startup";
-import { app, BrowserWindow, ipcMain } from "electron";
-import Store from 'electron-store';
+import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import { readdirSync, statSync } from "fs";
 import { join } from "node:path";
 
-const store = new Store();
-
-import { KSP_INSTALL_DIR } from "./settings.js";
+// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP/saves";
+const KSP_INSTALL_DIR = "D:\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (_SquirrelStartup) {
@@ -22,8 +20,8 @@ const createWindow = () => {
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
-			preload: join(app.getAppPath(), "src", "preload.js"),
-		},
+			preload: join(app.getAppPath(), "src", "preload.js")
+		}
 	});
 
 	// hide the menu
@@ -85,11 +83,21 @@ ipcMain.handle("get-saves", async () => {
 	}
 });
 
-// Get and save theme setting
-ipcMain.handle("get-theme", () => {
-    return store.get("theme", "dark"); // Default to dark mode
+//#region Theme
+ipcMain.handle("dark-mode:toggle", () => {
+	if (nativeTheme.shouldUseDarkColors) {
+		nativeTheme.themeSource = "light";
+	} else {
+		nativeTheme.themeSource = "dark";
+	}
+	return nativeTheme.shouldUseDarkColors;
 });
 
-ipcMain.on("set-theme", (_, theme) => {
-    store.set("theme", theme);
+ipcMain.handle("dark-mode:reset", () => {
+	nativeTheme.themeSource = "system";
 });
+
+ipcMain.handle("dark-mode:is-dark", () => {
+	return nativeTheme.shouldUseDarkColors;
+});
+//#endregion

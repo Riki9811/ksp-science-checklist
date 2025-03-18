@@ -4,7 +4,8 @@ contextBridge.exposeInMainWorld("api", {
 	getSaves: () => ipcRenderer.invoke("get-saves")
 });
 
-contextBridge.exposeInMainWorld("electron", {
-    getTheme: () => ipcRenderer.invoke("get-theme"),
-    setTheme: (theme) => ipcRenderer.send("set-theme", theme),
+contextBridge.exposeInMainWorld("darkMode", {
+    toggle: () => ipcRenderer.invoke("dark-mode:toggle"),
+	reset: () => ipcRenderer.invoke("dark-mode:reset"),
+    isDark: () => ipcRenderer.invoke("dark-mode:is-dark")
 });
