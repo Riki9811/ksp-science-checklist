@@ -90,3 +90,7 @@ out/
 
 # Compiled js
 dist/
+
+# UI samples
+UI (themes).pdn
+UI.pdn
