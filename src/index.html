@@ -11,16 +11,43 @@
 	<body>
 		<div id="app">
 			<button id="theme-toggle">theme</button>
+
+			<header id="titlebar">
+				<img src="../assets/icon.png" alt="KSP Science Checklist Icon" />
+				<button id="load-button">File</button>
+				<button id="settings-button">Settings</button>
+				<button id="import-button">Import</button>
+				<button id="window-button">Themes</button>
+				<button id="help-button">Help</button>
+			</header>
+
 			<aside id="sidebar">
-				<h2>Your Save Files:</h2>
+				<h1>Save Files:</h1>
 				<ul id="save-list">
 					<!-- Dynamically populated -->
 				</ul>
 			</aside>
+
 			<main id="content">
 				<div id="tab-container">
 					<div id="tabs">
-						<!-- Tabs will be dynamically generated -->
+						<div class="tab" id="tab-kerbol">Kerbol</div>
+						<div class="tab" id="tab-moho">Moho</div>
+						<div class="tab" id="tab-eve">Eve</div>
+						<div class="tab" id="tab-gilly">Gilly</div>
+						<div class="tab active" id="tab-kerbin">Kerbin</div>
+						<div class="tab" id="tab-mun">Mun</div>
+                        <div class="tab" id="tab-minmus">Minmus</div>
+                        <div class="tab" id="tab-duna">Duna</div>
+                        <div class="tab" id="tab-ike">Ike</div>
+                        <div class="tab" id="tab-dres">Dres</div>
+                        <div class="tab" id="tab-jool">Jool</div>
+                        <!-- <div class="tab" id="tab-laythe">Laythe</div>
+                        <div class="tab" id="tab-vall">Vall</div>
+                        <div class="tab" id="tab-tylo">Tylo</div>
+                        <div class="tab" id="tab-bop">Bop</div>
+                        <div class="tab" id="tab-pol">Pol</div>
+                        <div class="tab" id="tab-eeloo">Eeloo</div> -->
 					</div>
 					<div id="tab-content">
 						<!-- Content will be dynamically loaded -->

@@ -6,99 +6,165 @@
 
 @media (prefers-color-scheme: dark) {
 	body {
-		--bg-color: #121212;
-		--text-color: #ffffff;
+		--textCol-highlight: #ffffff;
+		--textCol: #c4c9d4;
+		--textCol-secondary: #8e9098;
+		--textCol-alt: #9ca5b4;
 
-		--sidebar-bg: #1e1e1e;
-		--sidebar-text: #cfcfcf;
+		--bgCol-main: #282c34;
+		--bgCol-main-highlight: #383e4a;
+		--bgCol-alt: #21252b;
+		--bgCol-alt-highlight: #2c313a;
 
-		--save-bg: #333333;
-		--save-active-bg: #444;
-
-		--tab-bg: #252525;
-		--tab-active-bg: #333333;
-		--tab-border: #444;
+		--borderCol-main: #181a1f;
+		--borderCol-highlight: #919295;
 	}
 }
 
 @media (prefers-color-scheme: light) {
 	body {
-		--bg-color: #f5f5f5;
-		--text-color: #121212;
-		--sidebar-bg: #ffffff;
-		--sidebar-text: #333;
-		--tab-bg: #dddddd;
-		--tab-active-bg: #bbbbbb;
-		--tab-border: #aaa;
+		--textCol-highlight: #000000;
+		--textCol: #222d44;
+		--textCol-secondary: #57647d;
+		--textCol-alt: #19334c;
+
+		--bgCol-main: #e5e8ef;
+		--bgCol-main-highlight: #cbdaf7;
+		--bgCol-alt: #d5dae5;
+		--bgCol-alt-highlight: #eef0f6;
+
+		--borderCol-main: #b6c1d7;
+		--borderCol-highlight: #222d44;
 	}
 }
 
 /* General Styling */
 body {
-	background-color: var(--bg-color);
-	color: var(--text-color);
+	background-color: var(--bgCol-main);
+	color: var(--textCol);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	margin: 0;
 	display: flex;
 	height: 100vh;
-	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+    transition-property: background-color, border-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
 }
 
 #app {
-	display: flex;
+	display: grid;
+	grid-template:
+		"titlebar titlebar" 3rem
+		"sidebar content" auto / 1fr 3fr;
 	width: 100%;
 }
 
+#titlebar {
+	grid-area: titlebar;
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 1rem;
+	padding: 0.75rem;
+	app-region: drag;
+	user-select: none;
+}
+
+#titlebar > * {
+	app-region: no-drag;
+}
+
 #theme-toggle {
-	background-color: var(--sidebar-bg);
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    font-size: 1.5rem;
+	background-color: var(--bgCol-alt);
+	position: absolute;
+	bottom: 0.75rem;
+	right: 0.75rem;
+	border: none;
+	font-size: 1.5rem;
 	width: 2.5rem;
 	height: 2.5rem;
 	border-radius: 100%;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 #theme-toggle:hover {
-	background-color: var(--save-bg);
+	background-color: var(--bgCol-alt-highlight);
 }
 
 /* Sidebar */
 #sidebar {
-	width: 250px;
-	background-color: var(--sidebar-bg);
 	color: var(--sidebar-text);
-	padding: 10px;
 	overflow-y: auto;
+	background-color: var(--bgCol-alt);
+	grid-area: sidebar;
+	padding: 0.75rem;
+	display: flex;
+	flex-direction: column;
+}
+
+#sidebar h1 {
+	font-size: 130%;
+	margin-bottom: 0.75rem;
 }
 
 #sidebar h2 {
+	font-size: 120%;
+}
+
+#sidebar h1,
+#sidebar h2,
+#sidebar h3 {
 	font-weight: bold;
+}
+
+#sidebar p {
+	font-size: 80%;
+	color: var(--textCol-secondary);
 }
 
 #save-list {
 	list-style: none;
 	padding: 0;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	gap: 0.75rem;
 }
 
-#save-list > li {
-	margin: 8px;
-	padding: 20px;
-	border-radius: 20px;
-	background-color: var(--save-bg);
+#save-list > .spacer div {
+	height: 2px;
+	background-color: var(--borderCol-main);
 }
 
-#save-list > li > ul > li {
-	padding: 10px;
-	border-radius: 10px;
-	cursor: pointer;
+.save-folder:last-child {
+	margin-bottom: 2rem;
 }
 
-#save-list > li > ul > li:hover {
-	background-color: var(--save-active-bg);
+.save-folder-title {
+	display: flex;
+	gap: 0.7ch;
+	align-items: baseline;
+}
+
+.save-folder.closed .save-folder-title {
+	margin-bottom: 0.2rem;
+}
+
+.save-file-list {
+	padding: 0.5rem 0 0.5rem 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	list-style: none;
+}
+
+.save-folder.closed .save-file-list {
+	display: none;
 }
 
 /* Main Content */
@@ -106,6 +172,7 @@ body {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
+	grid-area: content;
 }
 
 #tab-container {
@@ -116,19 +183,24 @@ body {
 
 #tabs {
 	display: flex;
-	background-color: var(--tab-bg);
-	border-bottom: 2px solid var(--tab-border);
+	background-color: var(--bgCol-alt);
 }
 
-#tabs div {
-	padding: 10px;
+#tabs > .tab {
+	padding: 0.7rem;
 	cursor: pointer;
 	flex: 1;
 	text-align: center;
+	border-left: 2px solid var(--borderCol-main);
+}
+
+#tabs > .tab:last-child {
+	border-right-width: 2px;
 }
 
 #tabs .active {
-	background-color: var(--tab-active-bg);
+	background-color: var(--bgCol-main-highlight);
+	color: var(--textCol-highlight);
 	font-weight: bold;
 }
 
