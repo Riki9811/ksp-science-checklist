@@ -6,19 +6,36 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
 		<link rel="stylesheet" href="index.css" />
 
-		<script defer src="renderer.js"></script>
+		<script defer src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+		<script defer src="renderer/index.js" type="module"></script>
 	</head>
 	<body>
 		<div id="app">
 			<button id="theme-toggle">theme</button>
 
 			<header id="titlebar">
-				<img src="../assets/icon.png" alt="KSP Science Checklist Icon" />
-				<button id="load-button">File</button>
-				<button id="settings-button">Settings</button>
-				<button id="import-button">Import</button>
-				<button id="window-button">Themes</button>
-				<button id="help-button">Help</button>
+				<div class="titlebar-left">
+					<img src="../assets/icon.png" alt="KSP Science Checklist Icon" />
+					<button type="button" id="load-button">File</button>
+					<button type="button" id="settings-button">Settings</button>
+					<button type="button" id="import-button">Import</button>
+					<button type="button" id="window-button">Themes</button>
+					<button type="button" id="help-button">Help</button>
+				</div>
+				<div class="titlebar-right">
+					<button type="button" id="minimize-button">
+						<i class="fa-solid fa-minus"></i>
+					</button>
+					<button type="button" id="maximize-button">
+						<i class="fa-regular fa-square"></i>
+					</button>
+					<button type="button" id="unmaximize-window-button">
+						<i class="fa-regular fa-window-restore"></i>
+					</button>
+					<button type="button" id="close-button">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</div>
 			</header>
 
 			<aside id="sidebar">
@@ -37,12 +54,12 @@
 						<div class="tab" id="tab-gilly">Gilly</div>
 						<div class="tab active" id="tab-kerbin">Kerbin</div>
 						<div class="tab" id="tab-mun">Mun</div>
-                        <div class="tab" id="tab-minmus">Minmus</div>
-                        <div class="tab" id="tab-duna">Duna</div>
-                        <div class="tab" id="tab-ike">Ike</div>
-                        <div class="tab" id="tab-dres">Dres</div>
-                        <div class="tab" id="tab-jool">Jool</div>
-                        <!-- <div class="tab" id="tab-laythe">Laythe</div>
+						<div class="tab" id="tab-minmus">Minmus</div>
+						<div class="tab" id="tab-duna">Duna</div>
+						<div class="tab" id="tab-ike">Ike</div>
+						<div class="tab" id="tab-dres">Dres</div>
+						<div class="tab" id="tab-jool">Jool</div>
+						<!-- <div class="tab" id="tab-laythe">Laythe</div>
                         <div class="tab" id="tab-vall">Vall</div>
                         <div class="tab" id="tab-tylo">Tylo</div>
                         <div class="tab" id="tab-bop">Bop</div>

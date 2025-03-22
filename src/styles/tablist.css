@@ -1,0 +1,32 @@
+#tab-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#tabs {
+	display: flex;
+	background-color: var(--bgCol-alt);
+}
+
+.tab {
+	padding: 0.7rem;
+	cursor: pointer;
+	flex: 1;
+	text-align: center;
+	border-left: 0.13rem solid var(--borderCol-main);
+}
+
+.tab:last-child {
+	border-right-width: 0.13rem;
+}
+
+.tab:hover:not(.active) {
+	background-color: var(--bgCol-hover);
+}
+
+.tab.active {
+	background-color: var(--bgCol-highlight);
+	color: var(--textCol-highlight);
+	font-weight: bold;
+}

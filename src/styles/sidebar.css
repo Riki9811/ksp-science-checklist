@@ -1,0 +1,141 @@
+/* Sidebar */
+#sidebar {
+	color: var(--textCol);
+	overflow-y: auto;
+	background-color: var(--bgCol-alt);
+	grid-area: sidebar;
+	padding: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	white-space: nowrap;
+}
+
+#sidebar h1 {
+	font-size: 130%;
+	margin-bottom: 0.75rem;
+}
+
+#sidebar h2 {
+	font-size: 120%;
+}
+
+#sidebar h1,
+#sidebar h2,
+#sidebar h3 {
+	font-weight: bold;
+}
+
+#sidebar p {
+	font-size: 80%;
+	color: var(--textCol-secondary);
+}
+
+#save-list {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden auto;
+	gap: 0.4rem;
+}
+
+#save-list > .spacer div {
+	height: 0.13rem;
+	background-color: var(--borderCol-main);
+}
+
+.save-folder * {
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.save-folder:last-child {
+	margin-bottom: 2rem;
+}
+
+.save-folder-title {
+	display: flex;
+	gap: 0.7ch;
+	align-items: center;
+	cursor: pointer;
+	padding: 0.4rem 0.7rem;
+	border-radius: 0.5rem;
+}
+
+.save-folder-title:hover {
+	background-color: var(--bgCol-hover);
+}
+
+.save-folder-title > p {
+	flex: 1 0;
+}
+
+.save-folder.closed .save-folder-title {
+	margin-bottom: 0.2rem;
+}
+
+.save-folder-title > .fa-chevron-down {
+	transition: transform 250ms ease;
+}
+
+.save-folder.closed .save-folder-title > .fa-chevron-down {
+	transform: rotate(-90deg);
+}
+
+.save-folder-title > p {
+	margin-top: 0.3rem;
+}
+
+/* Sets the color of the folder-title to highlighted if the folder
+is closed and the selected save-file is inside of it */
+.save-folder.closed:has(.save-file-list > .selected) > .save-folder-title {
+	background-color: var(--bgCol-highlight);
+}
+
+.save-file-list {
+	padding: 0.5rem 0 0.5rem 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	list-style: none;
+}
+
+.save-folder.closed .save-file-list {
+	display: none;
+}
+
+.save-file {
+	display: grid;
+	grid-template:
+		"name chevron" auto
+		"stats chevron" auto / auto min-content;
+	align-items: center;
+	padding: 0.2rem 0.7rem;
+	border-radius: 0.5rem;
+}
+
+.save-file:hover:not(.selected) {
+	background-color: var(--bgCol-hover);
+}
+
+.save-file.selected {
+	background-color: var(--bgCol-highlight);
+}
+
+.save-file > h3 {
+	grid-area: name;
+}
+
+.save-file > p {
+	grid-area: stats;
+}
+
+.save-file > svg {
+	grid-area: chevron;
+	display: none;
+}
+
+.save-file.selected > svg {
+	display: block;
+}

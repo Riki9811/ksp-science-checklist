@@ -1,0 +1,91 @@
+/* Root variables for dark mode (default) */
+:root {
+	overflow: auto;
+	color-scheme: light dark obsidian;
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--textCol-highlight: #ffffff;
+		--textCol: #c4c9d4;
+		--textCol-secondary: #8e9098;
+		--textCol-alt: #9ca5b4;
+
+		--bgCol-main: #282c34;
+		--bgCol-alt: #21252b;
+		--bgCol-highlight: #383e4a;
+		--bgCol-hover: #2c313a;
+
+		--borderCol-main: #181a1f;
+		--borderCol-highlight: #919295;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	body {
+		--textCol-highlight: #000000;
+		--textCol: #222d44;
+		--textCol-secondary: #57647d;
+		--textCol-alt: #19334c;
+
+		--bgCol-main: #e5e8ef;
+		--bgCol-alt: #d5dae5;
+		--bgCol-highlight: #cbdaf7;
+		--bgCol-hover: #eef0f6;
+
+		--borderCol-main: #b6c1d7;
+		--borderCol-highlight: #222d44;
+	}
+}
+
+/* General Styling */
+body {
+	background-color: var(--bgCol-main);
+	color: var(--textCol);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	margin: 0;
+	display: flex;
+	height: 100vh;
+	user-select: none;
+}
+
+* {
+	transition-property: background-color, border-color;
+	transition-duration: 200ms;
+	transition-timing-function: ease;
+}
+
+button {
+	color: var(--textCol-secondary);
+	border-radius: 0.5rem;
+}
+
+button:hover {
+	color: var(--textCol);
+	background-color: var(--bgCol-hover);
+}
+
+#app {
+	display: grid;
+	grid-template:
+		"titlebar titlebar" 2.75rem
+		"sidebar content" auto / 1fr 3fr;
+	width: 100%;
+}
+
+#theme-toggle {
+	background-color: var(--bgCol-alt);
+	position: absolute;
+	bottom: 0.75rem;
+	right: 0.75rem;
+	border: none;
+	font-size: 1.5rem;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 100%;
+	cursor: pointer;
+}
+
+#theme-toggle:hover {
+	background-color: var(--bgCol-highlight);
+}
