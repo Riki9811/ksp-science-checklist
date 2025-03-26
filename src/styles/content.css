@@ -3,9 +3,11 @@
 	display: flex;
 	flex-direction: column;
 	grid-area: content;
+	overflow-x: auto;
 }
 
-#tab-content {
-	flex-grow: 1;
-	padding: 1rem;
+#main-content {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }

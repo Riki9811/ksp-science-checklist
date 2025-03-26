@@ -13,9 +13,9 @@ if (closeButton) closeButton.addEventListener("click", app.close);
 (async () => {
 	const maximized = await app.isMaximized();
 	if (maximized) {
-        setMaximizeVisible(false);
+		setMaximizeVisible(false);
 	} else {
-        setUnmaximizeVisible(false);
+		setUnmaximizeVisible(false);
 	}
 })();
 

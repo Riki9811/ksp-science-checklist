@@ -20,10 +20,10 @@ export const SaveType = {
  */
 export function parseSFS(filePath) {
 	try {
-        const fileContents = fs.readFileSync(filePath, "utf-8");
-        if (filePath.includes("quicksave")) {
-            console.log("quicksave");
-        }
+		const fileContents = fs.readFileSync(filePath, "utf-8");
+		if (filePath.includes("quicksave")) {
+			console.log("quicksave");
+		}
 		return extractScienceData(fileContents);
 	} catch (error) {
 		console.error(`Error reading SFS file: ${filePath}`, error);
@@ -37,13 +37,13 @@ export function parseSFS(filePath) {
  * @returns {Object} - Extracted science data.
  */
 function extractScienceData(fileContents) {
-    const scienceData = [];
+	const scienceData = [];
 
 	const scenarioMatch = SCENARIO_REGEX.exec(fileContents);
 	if (!scenarioMatch) return { scienceData };
 
-    const scenarioContent = scenarioMatch[0];
-    
+	const scenarioContent = scenarioMatch[0];
+
 	let match;
 	while ((match = SCIENCE_REGEX.exec(scenarioContent)) !== null) {
 		scienceData.push({

@@ -1,7 +1,6 @@
-import startup from "electron-squirrel-startup";
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
+import startup from "electron-squirrel-startup";
 import { readdirSync, statSync } from "fs";
-import { parseSFS } from "./sfsParser.js";
 import { join } from "node:path";
 
 /** @type {BrowserWindow} */
@@ -21,6 +20,7 @@ function createWindow() {
 		icon: join(app.getAppPath(), "assets", "icon.png"),
 		width: 1920,
 		height: 1080,
+		minWidth: 700,
 		titleBarStyle: "hidden",
 		webPreferences: {
 			nodeIntegration: false, // Improves security

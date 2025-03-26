@@ -123,7 +123,7 @@ function createSaveFileList(sfsData) {
 	return saveFile;
 }
 
-// The html element of the currently selected save
+/** @type {HTMLElement} The save element currently selected */
 var selectedSaveElement = null;
 
 /**
