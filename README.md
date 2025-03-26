@@ -18,8 +18,33 @@ A **desktop application** built with **Electron** and **JavaScript** to help tra
 ✅ **Modern UI** – Tab-based interface for each celestial body 📌\
 ✅ **Save File Parsing** – Extracts science data from `.sfs` files 📂\
 ✅ **Settings Persistence** – Remembers user preferences 🔧\
-✅ **Windows **``** Build** – Standalone executable for easy use 💾\
+✅ **Windows Build** – Standalone executable for easy use 💾\
 🛠️ **Future Cross-Platform Support** – Linux & macOS planned! 🌍
+
+<br />
+
+## ❓ Why Use Electron Instead of a KSP Mod?
+
+I wanted to learn **Electron**, and this project came to mind, inspired by the great work done by [nic_name](https://forum.kerbalspaceprogram.com/topic/211219-ksp-science-checklist-v30/) on the KSP forum, who compiled a list of all science in the stock game and put it in an Excel spreadsheet.
+
+Yes, a **mod would be better**—it could provide **live updates** when new experiments are completed and potentially **support modded planets/experiments**, similar to [x] Science! Continued ([Forum Link](https://forum.kerbalspaceprogram.com/topic/182683-ksp-190-x-science-continued-ksp-science-report-and-checklist-v523/)).
+
+However, I **don’t know how to mod KSP**, and I don't plan to develop a mod with similar functionality. If someone else wants to take inspiration and create one, they're more than welcome! I understand that reading save files has its **limitations**.
+
+<br />
+
+## 🔍 How Does the App Work? What Are Its Limitations?
+
+The program **reads the saves folder** in your KSP install and displays a list of all detected saves. When you select a save, it provides an **intuitive graphical UI** showing:
+
+-   **Which experiments you have completed** in that save.
+-   **How much science** is still available to collect.
+
+#### 🚧 Limitations:
+
+-   Since it **only reads save files**, it **cannot refresh in real-time** while the game is running. You must **save in KSP** and manually refresh the app to update the data.
+-   The app **only supports vanilla KSP**. It does **not** detect or handle modded celestial bodies or experiments.
+-   Any **mod that adds new experiments or celestial bodies could cause conflicts or crashes**. The app is designed to **ignore** records for unknown experiments, but this hasn't been thoroughly tested. As long as a mod does **not** change how vanilla experiments are stored in the save file, the app **should** function correctly.
 
 <br />
 
