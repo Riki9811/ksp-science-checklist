@@ -9,6 +9,6 @@
 #main-content {
 	display: flex;
 	flex-direction: column;
-	user-select: auto;
+	user-select: text;
 	height: 100%;
 }

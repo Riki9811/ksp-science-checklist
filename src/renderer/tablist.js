@@ -3,7 +3,7 @@ const tabs = Array.from(tabList.getElementsByClassName("tab"));
 
 // By default selected is kerbin (TODO: remember last selected)
 /** @type {HTMLElement} The tab element currently selected */
-var selectedTab = document.getElementById("tab-kerbin");
+var showingTab = document.getElementById("tab-kerbin");
 
 // Scrolls horizontally with mousewheel
 tabList.addEventListener("wheel", (event) => {
@@ -23,13 +23,13 @@ tabs.forEach((tab) => {
  * @param {MouseEvent} evt the mouse click event
  */
 function onTabClick(evt) {
-	if (selectedTab) selectedTab.classList.remove("active");
-
-	if (selectedTab === evt.target) {
+	if (showingTab === evt.target) {
 		return;
-	} else {
-		selectedTab = evt.target;
-		selectedTab.classList.add("active");
-		console.log(selectedTab.dataset.body);
 	}
+
+	showingTab.classList.remove("active");
+	showingTab = evt.target;
+	showingTab.classList.add("active");
+
+	content.onTabSelect(showingTab.dataset.body);
 }

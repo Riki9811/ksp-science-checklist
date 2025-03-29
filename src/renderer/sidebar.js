@@ -1,11 +1,12 @@
-import { saves } from "./tempSaves.js";
-
 const saveList = document.getElementById("save-list");
+const loading = document.getElementById("saves-loading");
 
-(async () => {
+window.api.onSavesLoaded((saves) => {
 	if (!saveList) return;
 
-	// const saves = await window.api.getSaves();
+	// Clear existing list
+	loading.remove();
+	saveList.innerHTML = "";
 
 	saves.forEach((save) => {
 		const folderItem = createSaveFolder(save);
@@ -16,7 +17,7 @@ const saveList = document.getElementById("save-list");
 		saveList.appendChild(spacer);
 		saveList.appendChild(folderItem);
 	});
-})();
+});
 
 /**
  * Creates an <li> element for a save folder entry.
@@ -91,7 +92,7 @@ function createSaveFolderTitle(folderData, saveFolder) {
  * @param {string} sfsData.name - The name of the save file.
  * @param {string} sfsData.path - The full path to the save file.
  * @param {number} sfsData.science - The amount of science collected.
- * @param {number} sfsData.recordCount - The number of experiments recorded.
+ * @param {number} sfsData.experimentCount - The number of experiments recorded.
  * @returns {HTMLElement} The generated <li> element.
  */
 function createSaveFileList(sfsData) {
@@ -106,7 +107,7 @@ function createSaveFileList(sfsData) {
 
 	// Create the <p> for science and experiments count
 	const info = document.createElement("p");
-	info.textContent = `Science: ${sfsData.science}  |  Experiments: ${sfsData.recordCount}`;
+	info.textContent = `Science: ${sfsData.science}  |  Experiments: ${sfsData.experimentCount}`;
 
 	// Create the chevron icon from fontawesome
 	const chevron = document.createElement("i");
@@ -118,7 +119,7 @@ function createSaveFileList(sfsData) {
 	saveFile.appendChild(chevron);
 
 	// Add click event listener to log the path from dataset
-	saveFile.addEventListener("click", () => setSelected(saveFile));
+	saveFile.addEventListener("click", () => onSaveFileClick(saveFile));
 
 	return saveFile;
 }
@@ -131,7 +132,7 @@ var selectedSaveElement = null;
  * and triggers the part that reads the file and shows the tables in the main.
  * @param {HTMLElement} saveFileElement the saveFile element that must be selected
  */
-function setSelected(saveFileElement) {
+function onSaveFileClick(saveFileElement) {
 	if (selectedSaveElement) selectedSaveElement.classList.remove("selected");
 
 	if (selectedSaveElement === saveFileElement) {
@@ -139,6 +140,7 @@ function setSelected(saveFileElement) {
 	} else {
 		selectedSaveElement = saveFileElement;
 		saveFileElement.classList.add("selected");
-		console.log(saveFileElement.dataset.path);
 	}
+
+	content.onSaveSelect(selectedSaveElement?.dataset.path || null);
 }

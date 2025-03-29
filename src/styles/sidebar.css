@@ -138,3 +138,30 @@ is closed and the selected save-file is inside of it */
 .save-file.selected > svg {
 	display: block;
 }
+
+#saves-loading {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+    align-items: center;
+    color: var(--textCol-secondary);
+	flex-grow: 1;
+}
+
+#saves-loading svg {
+    animation: spin 700ms steps(8) infinite;
+}
+
+#saves-loading .spin-container {
+    font-size: 200%;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}

@@ -1,13 +1,14 @@
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import startup from "electron-squirrel-startup";
-import { readdirSync, statSync } from "fs";
 import { join } from "node:path";
+import utils from "./utils/index.js";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
 // const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP/saves";
-const KSP_INSTALL_DIR = "D:\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
+// const KSP_INSTALL_DIR = "D:\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
+const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (startup) {
@@ -21,6 +22,7 @@ function createWindow() {
 		width: 1920,
 		height: 1080,
 		minWidth: 700,
+		minHeight: 500,
 		titleBarStyle: "hidden",
 		webPreferences: {
 			nodeIntegration: false, // Improves security
@@ -35,9 +37,15 @@ function createWindow() {
 	newWindow.loadFile(join(app.getAppPath(), "src", "index.html"));
 
 	// Open the DevTools.
-	// mainWindow.webContents.on("did-finish-load", () => {
-	// 	mainWindow.webContents.openDevTools();
-	// });
+	newWindow.webContents.on("did-finish-load", async () => {
+		newWindow.webContents.openDevTools();
+		setTimeout(() => {
+			// Load saves and trigger event
+			let saves = utils.getSaves(KSP_INSTALL_DIR);
+			newWindow.webContents.send("savesLoaded", saves);
+		}, 100);
+	});
+
 	return newWindow;
 }
 
@@ -87,29 +95,9 @@ app.on("window-all-closed", () => {
 });
 
 // Read save files from the KSP install directory
-ipcMain.handle("get-saves", async () => {
-	try {
-		let saves = {};
-
-		// Read save folders
-		const folders = readdirSync(KSP_INSTALL_DIR)
-			.filter((folder) => !["training", "scenarios", "missions"].includes(folder.toLowerCase()))
-			.filter((folder) => statSync(join(KSP_INSTALL_DIR, folder)).isDirectory());
-
-		// Process each save folder
-		for (const folder of folders) {
-			const folderPath = join(KSP_INSTALL_DIR, folder);
-			const sfsFiles = readdirSync(folderPath).filter((file) => file.endsWith(".sfs"));
-
-			// Create an object where each file name maps to its full path
-			saves[folder] = Object.fromEntries(sfsFiles.map((file) => [file, join(folderPath, file)]));
-		}
-
-		return saves;
-	} catch (error) {
-		console.error("Error reading save files:", error);
-		return {};
-	}
+ipcMain.handle("getSaves", async () => {
+	let saves = utils.getSaves(KSP_INSTALL_DIR);
+	return saves;
 });
 
 //#region Theme
@@ -145,4 +133,16 @@ ipcMain.on("window/maximize", () => appWindow.maximize());
 ipcMain.on("window/unmaximize", () => appWindow.unmaximize());
 ipcMain.on("window/close", () => appWindow.close());
 ipcMain.on("window/isMaximized", () => appWindow.isMaximized);
+//#endregion
+
+//#region Content
+// Handle tab selection and notify all renderer processes
+ipcMain.on("onTabSelect", (_, selectedTab) => {
+	appWindow.webContents.send("updateContent", { type: "tab", value: selectedTab });
+});
+
+// Handle save file selection and notify all renderer processes
+ipcMain.on("onSaveSelect", (_, selectedSave) => {
+	appWindow.webContents.send("updateContent", { type: "save", value: selectedSave });
+});
 //#endregion

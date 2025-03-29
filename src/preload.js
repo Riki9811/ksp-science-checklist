@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-	getSaves: () => ipcRenderer.invoke("get-saves")
+	getSaves: () => ipcRenderer.invoke("getSaves"),
+	onSavesLoaded: (callback) => ipcRenderer.on("savesLoaded", (_, saves) => callback(saves))
 });
 
 contextBridge.exposeInMainWorld("darkMode", {
@@ -24,4 +25,12 @@ contextBridge.exposeInMainWorld("app", {
 	onUnmaximize: (callback) => {
 		ipcRenderer.on("window/onUnmaximize", callback);
 	}
+});
+
+contextBridge.exposeInMainWorld("content", {
+	onSaveSelect: (selectedSave) => ipcRenderer.send("onSaveSelect", selectedSave),
+	onTabSelect: (selectedTab) => ipcRenderer.send("onTabSelect", selectedTab),
+
+	// Allows content.js to listen for updates
+	onUpdateContent: (callback) => ipcRenderer.on("updateContent", (_, data) => callback(data))
 });

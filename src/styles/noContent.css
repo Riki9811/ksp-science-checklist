@@ -1,16 +1,16 @@
 #no-content {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 #no-content > h1 {
-    font-weight: bolder;
-    font-size: 200%;
+	font-weight: bolder;
+	font-size: 200%;
 }
 
 #no-content > p {
-    color: var(--textCol-secondary);
+	color: var(--textCol-secondary);
 }
