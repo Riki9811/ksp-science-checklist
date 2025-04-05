@@ -1,15 +1,15 @@
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import startup from "electron-squirrel-startup";
-import { join } from "node:path";
+import { join, basename } from "node:path";
 import utils from "./utils/index.js";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
 // const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP/saves";
-// const KSP_INSTALL_DIR = "D:\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
-const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program\\saves";
+const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
 
+//#region Window
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (startup) {
 	app.quit();
@@ -39,11 +39,6 @@ function createWindow() {
 	// Open the DevTools.
 	newWindow.webContents.on("did-finish-load", async () => {
 		newWindow.webContents.openDevTools();
-		setTimeout(() => {
-			// Load saves and trigger event
-			let saves = utils.getSaves(KSP_INSTALL_DIR);
-			newWindow.webContents.send("savesLoaded", saves);
-		}, 100);
 	});
 
 	return newWindow;
@@ -93,12 +88,71 @@ app.on("window-all-closed", () => {
 		app.quit();
 	}
 });
+//#endregion
 
-// Read save files from the KSP install directory
-ipcMain.handle("getSaves", async () => {
-	let saves = utils.getSaves(KSP_INSTALL_DIR);
-	return saves;
+//#region save folders/files reading
+ipcMain.handle("getRawFolders", async () => {
+	const result = await utils.fileSystem.getRawFolders(KSP_INSTALL_DIR);
+
+	if (result.code === 0) return result.folders;
+
+	// TODO: show error to the user and suggest solutions
+	console.error(`Error ${result.code} reading install dir.`);
+	switch (result.code) {
+		case 1:
+			console.error(`No 'saves' folder found inside: ${KSP_INSTALL_DIR}`);
+			return [];
+		case 2:
+			console.error(`Could not access: ${KSP_INSTALL_DIR}\\saves`);
+			return [];
+		case 3:
+			console.error(`Path is not a folder: ${KSP_INSTALL_DIR}`);
+			return [];
+		case -1:
+			console.error("Unkown error occurred. ¯\\_(ツ)_/¯");
+			return [];
+	}
 });
+
+ipcMain.handle("exploreFolder", async (_, folderPath) => {
+	// Get list of sfsFile paths
+	const sfsPaths = await utils.fileSystem.getSfsFiles(folderPath);
+
+	var persistentMode = "";
+	var persistentVersion = "";
+
+	const sfsFiles = (
+		await Promise.all(
+			// Map over all the sfs file paths
+			sfsPaths.map(async (sfsPath) => {
+				const result = await utils.fileSystem.readFileContents(sfsPath);
+
+				// TODO: show error to user
+				if (result.code !== 0) return null;
+
+				const sfsFile = utils.parseSfs(result.content, sfsPath);
+
+				if (sfsFile.name === "persistent.sfs") {
+					persistentVersion = sfsFile.version;
+					persistentMode = sfsFile.mode;
+				}
+
+				return sfsFile;
+			})
+		)
+	).filter(Boolean); // Remove any null values from the resulting array, keeping only valid files
+
+	const exploredFolder = {
+		name: basename(folderPath),
+		path: folderPath,
+		mode: persistentMode,
+		version: persistentVersion,
+		sfsFiles
+	};
+
+	return exploredFolder;
+});
+//#endregion
 
 //#region Theme
 ipcMain.handle("dark-mode:toggle", () => {

@@ -1,19 +1,13 @@
-/**
- * @typedef {Object} ParsedSfs
- * @property {string} name - The name of the file.
- * @property {string} version - The version of the game, or `null` if not found.
- * @property {string} mode - The game mode ("CAREER", "SANDBOX_SCIENCE" or "SANDBOX"), or `null` if not found.
- * @property {number} sciencePoints - The total amount of science points, rounded to 1 decimal place. Defaults to `0` if not found.
- * @property {string[]} experiments - A list of all experiment IDs found in the ResearchAndDevelopment block. Defaults to an empty array if none are found.
- * @property {number} experimentCount - The total number of experiments found. Defaults to `0` if no experiments are found.
- */
+import { basename } from "node:path";
 
 /**
  * Parses the content of an SFS file to extract specific information.
  * @param {string} sfsContent - The content of the SFS file as a string.
- * @returns {ParsedSfs} An object containing the extracted data.
+ * @returns {Object} An object containing the extracted data.
  */
-export default function parseSFS(sfsContent, fileName) {
+export default function parseSFS(sfsContent, filePath) {
+    const fileName = basename(filePath);
+
 	// Extract version
 	const version = extractVersion(sfsContent);
 
@@ -23,7 +17,8 @@ export default function parseSFS(sfsContent, fileName) {
 	// If it's a Sandbox game, there is no R&D and no science to extract, so return default values
 	if (mode === "SANDBOX") {
 		return {
-			name: fileName,
+            name: fileName,
+            path: filePath,
 			version,
 			mode,
 			sciencePoints: 0,
@@ -44,6 +39,7 @@ export default function parseSFS(sfsContent, fileName) {
 	// Return the parsed data
 	return {
 		name: fileName,
+		path: filePath,
 		version,
 		mode,
 		sciencePoints,

@@ -1,8 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-	getSaves: () => ipcRenderer.invoke("getSaves"),
-	onSavesLoaded: (callback) => ipcRenderer.on("savesLoaded", (_, saves) => callback(saves))
+	getRawFolders: () => ipcRenderer.invoke("getRawFolders"),
+	exploreFolder: (folderPath) => ipcRenderer.invoke("exploreFolder", folderPath)
 });
 
 contextBridge.exposeInMainWorld("darkMode", {
