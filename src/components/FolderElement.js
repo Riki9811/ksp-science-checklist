@@ -97,9 +97,9 @@ export default class FolderElement {
 		this.#mode = folderData.mode;
 		this.#version = folderData.version;
 
-        // Update UI
-        const icon = this.#createModeIcon();
-        this.#infoElement.innerHTML = "";
+		// Update UI
+		const icon = this.#createModeIcon();
+		this.#infoElement.innerHTML = "";
 		this.#infoElement.appendChild(icon);
 		this.#infoElement.innerHTML += ` - v${this.#version}`;
 

@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import startup from "electron-squirrel-startup";
-import { join, basename } from "node:path";
+import { basename, join } from "node:path";
 import utils from "./utils/index.js";
 
 /** @type {BrowserWindow} */

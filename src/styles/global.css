@@ -19,9 +19,9 @@
 		--borderCol-main: #181a1f;
 		--borderCol-highlight: #919295;
 
-        --scrollbarCol: #383e4a99;
-        --scrollbarCol-hover: #383e4acc;
-        --scrollbarCol-active: #383e4a;
+		--scrollbarCol: #383e4a99;
+		--scrollbarCol-hover: #383e4acc;
+		--scrollbarCol-active: #383e4a;
 	}
 }
 
@@ -40,9 +40,9 @@
 		--borderCol-main: #b6c1d7;
 		--borderCol-highlight: #222d44;
 
-        --scrollbarCol: #ffffff4d;
-        --scrollbarCol-hover: #ffffff66;
-        --scrollbarCol-active: #ffffff80;
+		--scrollbarCol: #ffffff4d;
+		--scrollbarCol-hover: #ffffff66;
+		--scrollbarCol-active: #ffffff80;
 	}
 }
 

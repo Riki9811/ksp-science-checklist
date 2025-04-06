@@ -1,13 +1,10 @@
 const mainContent = document.getElementById("main-content");
-const noContentElement = document.getElementById("no-content");
 
 var scienceData = null;
-var showingTab = "kerbin";
+var selectedTab = "kerbin";
 
 // Listen for content updates (triggered in sidebar.js and tablist.js)
 content.onUpdateContent((data) => {
-	console.log(data);
-
 	if (data.type === "tab") {
 		onTabSelect(data.value);
 	} else if (data.type === "save") {
@@ -20,15 +17,11 @@ content.onUpdateContent((data) => {
  * @param {string} selectedSave path to the save to show
  */
 function onSaveSelect(selectedSave) {
-	// If empty new selected, so show no content message
-	if (!selectedSave) {
-		mainContent.appendChild(noContentElement);
-		return;
-	}
+	// Update scienceData
+	scienceData = selectedSave;
 
-	// Else there is data, read it with sfsParser and show it
-	noContentElement.remove();
-	// main.innerHTML = `Selected Save: ${selectedSave}`;
+	// Update content
+	updateContent();
 }
 
 /**
@@ -36,19 +29,21 @@ function onSaveSelect(selectedSave) {
  * @param {string} selectedTab name of the selected tab
  */
 function onTabSelect(selectedTab) {
-	showingTab = selectedTab;
+	selectedTab = selectedTab;
 
-	// If there is no data, show no content message
+	// If there is no data, don't do anything
 	if (!scienceData) {
-		mainContent.appendChild(noContentElement);
 		return;
 	}
 
-	// Else update to show correct tab
-	noContentElement.remove();
-	// mainContent.innerHTML = `Selected Tab: ${selectedTab}`;
+	// Else update content
+	updateContent();
 }
 
-function showContent(content) {
-	mainContent.innerHTML = content;
+function updateContent() {
+	// Clear current content
+	mainContent.innerHTML = "";
+
+	console.log(scienceData);
+	console.log(selectedTab);
 }

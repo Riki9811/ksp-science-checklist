@@ -6,7 +6,7 @@ import { basename } from "node:path";
  * @returns {Object} An object containing the extracted data.
  */
 export default function parseSFS(sfsContent, filePath) {
-    const fileName = basename(filePath);
+	const fileName = basename(filePath);
 
 	// Extract version
 	const version = extractVersion(sfsContent);
@@ -17,8 +17,8 @@ export default function parseSFS(sfsContent, filePath) {
 	// If it's a Sandbox game, there is no R&D and no science to extract, so return default values
 	if (mode === "SANDBOX") {
 		return {
-            name: fileName,
-            path: filePath,
+			name: fileName,
+			path: filePath,
 			version,
 			mode,
 			sciencePoints: 0,
@@ -101,25 +101,23 @@ function extractSciencePoints(rAndDContent) {
  * Returns an empty array if no `Science` objects are found or if the input is invalid.
  */
 function extractExperiments(rAndDContent) {
-    if (!rAndDContent) return []; // Return an empty array if the input is null or undefined.
+	if (!rAndDContent) return []; // Return an empty array if the input is null or undefined.
 
-	// Regular expression to match `Science` objects and capture their `id` values.
-    const regex_old = /Science\s*{\s*id\s*=\s*([^\s]+)/g;
-    // Regular expression to match `Science` objects and capture `id`, `sci`, and `cap` values.
-    const regex = /Science\s*{\s*id\s*=\s*([^\s]+)[^}]*?\bsci\s*=\s*([^\s]+)[^}]*?\bcap\s*=\s*([^\s]+)/g;
+	// Regular expression to match `Science` objects and capture `id`, `sci`, and `cap` values.
+	const regex = /Science\s*{\s*id\s*=\s*([^\s]+)[^}]*?\bsci\s*=\s*([^\s]+)[^}]*?\bcap\s*=\s*([^\s]+)/g;
 
-    let matches;
-    const experiments = [];
+	let matches;
+	const experiments = [];
 
-    // Use a while loop to find all matches and extract the `id`, `sci`, and `cap` values.
-    while ((matches = regex.exec(rAndDContent))) {
-        const id = matches[1];
-        const collected = parseFloat(matches[2]);
-        const total = parseFloat(matches[3]);
+	// Use a while loop to find all matches and extract the `id`, `sci`, and `cap` values.
+	while ((matches = regex.exec(rAndDContent))) {
+		const id = matches[1];
+		const collected = parseFloat(matches[2]);
+		const total = parseFloat(matches[3]);
 
-        // Add the extracted experiment object to the output array.
-        experiments.push({ id, collected, total });
-    }
+		// Add the extracted experiment object to the output array.
+		experiments.push({ id, collected, total });
+	}
 
-    return experiments; // Return the array of extracted experiment objects.
+	return experiments; // Return the array of extracted experiment objects.
 }

@@ -131,108 +131,105 @@ describe("hasPersistentFile", () => {
 });
 
 describe("readFileContents", () => {
-    const mockFilePath = join("mock", "ksp", "saves", "TestSave", "persistent.sfs");
+	const mockFilePath = join("mock", "ksp", "saves", "TestSave", "persistent.sfs");
 
-    beforeEach(() => {
+	beforeEach(() => {
 		jest.resetAllMocks();
 		fs.readFile = jest.fn(); // Explicitly mock fs.readFile
 	});
 
-    it("should return the file content and code 0 for a valid file", async () => {
-        const mockContent = "mock file content";
-        fs.readFile.mockResolvedValue(mockContent);
+	it("should return the file content and code 0 for a valid file", async () => {
+		const mockContent = "mock file content";
+		fs.readFile.mockResolvedValue(mockContent);
 
-        const result = await fileSystem.readFileContents(mockFilePath);
+		const result = await fileSystem.readFileContents(mockFilePath);
 
-        expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
-        expect(result).toEqual({ content: mockContent, code: 0 });
-    });
+		expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
+		expect(result).toEqual({ content: mockContent, code: 0 });
+	});
 
-    it("should return code 1 if the file does not exist", async () => {
-        fs.readFile.mockRejectedValue({ code: "ENOENT" });
+	it("should return code 1 if the file does not exist", async () => {
+		fs.readFile.mockRejectedValue({ code: "ENOENT" });
 
-        const result = await fileSystem.readFileContents(mockFilePath);
+		const result = await fileSystem.readFileContents(mockFilePath);
 
-        expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
-        expect(result).toEqual({ content: "", code: 1 });
-    });
+		expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
+		expect(result).toEqual({ content: "", code: 1 });
+	});
 
-    it("should return code 2 if the file is inaccessible", async () => {
-        fs.readFile.mockRejectedValue({ code: "EACCES" });
+	it("should return code 2 if the file is inaccessible", async () => {
+		fs.readFile.mockRejectedValue({ code: "EACCES" });
 
-        const result = await fileSystem.readFileContents(mockFilePath);
+		const result = await fileSystem.readFileContents(mockFilePath);
 
-        expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
-        expect(result).toEqual({ content: "", code: 2 });
-    });
+		expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
+		expect(result).toEqual({ content: "", code: 2 });
+	});
 
-    it("should return code -1 for any other error", async () => {
-        fs.readFile.mockRejectedValue(new Error("Unknown error"));
+	it("should return code -1 for any other error", async () => {
+		fs.readFile.mockRejectedValue(new Error("Unknown error"));
 
-        const result = await fileSystem.readFileContents(mockFilePath);
+		const result = await fileSystem.readFileContents(mockFilePath);
 
-        expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
-        expect(result).toEqual({ content: "", code: -1 });
-    });
+		expect(fs.readFile).toHaveBeenCalledWith(mockFilePath, "utf-8");
+		expect(result).toEqual({ content: "", code: -1 });
+	});
 });
 
 describe("getSfsFiles", () => {
-    const mockDirectoryPath = join("mock", "ksp", "saves", "TestSave");
+	const mockDirectoryPath = join("mock", "ksp", "saves", "TestSave");
 
-    beforeEach(() => {
-        jest.resetAllMocks();
-        fs.readdir = jest.fn(); // Explicitly mock fs.readdir
-    });
+	beforeEach(() => {
+		jest.resetAllMocks();
+		fs.readdir = jest.fn(); // Explicitly mock fs.readdir
+	});
 
-    it("should return a list of .sfs file paths if they exist in the directory", async () => {
-        const mockItems = [
-            { name: "persistent.sfs", isFile: () => true },
-            { name: "quicksave.sfs", isFile: () => true },
-            { name: "not-a-save.txt", isFile: () => true },
-            { name: "subfolder", isFile: () => false }
-        ];
-        const expectedResult = [
-            join(mockDirectoryPath, "persistent.sfs"),
-            join(mockDirectoryPath, "quicksave.sfs")
-        ];
+	it("should return a list of .sfs file paths if they exist in the directory", async () => {
+		const mockItems = [
+			{ name: "persistent.sfs", isFile: () => true },
+			{ name: "quicksave.sfs", isFile: () => true },
+			{ name: "not-a-save.txt", isFile: () => true },
+			{ name: "subfolder", isFile: () => false }
+		];
+		const expectedResult = [join(mockDirectoryPath, "persistent.sfs"), join(mockDirectoryPath, "quicksave.sfs")];
 
-        fs.readdir.mockResolvedValue(mockItems);
+		fs.readdir.mockResolvedValue(mockItems);
 
-        const result = await fileSystem.getSfsFiles(mockDirectoryPath);
+		const result = await fileSystem.getSfsFiles(mockDirectoryPath);
 
-        expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
-        expect(result).toEqual(expectedResult);
-    });
+		expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
+		expect(result).toEqual(expectedResult);
+	});
 
-    it("should return an empty list if no .sfs files exist in the directory", async () => {
-        const mockItems = [
-            { name: "not-a-save.txt", isFile: () => true },
-            { name: "subfolder", isFile: () => false }
-        ];
+	it("should return an empty list if no .sfs files exist in the directory", async () => {
+		const mockItems = [
+			{ name: "not-a-save.txt", isFile: () => true },
+			{ name: "subfolder", isFile: () => false }
+		];
 
-        fs.readdir.mockResolvedValue(mockItems);
+		fs.readdir.mockResolvedValue(mockItems);
 
-        const result = await fileSystem.getSfsFiles(mockDirectoryPath);
+		const result = await fileSystem.getSfsFiles(mockDirectoryPath);
 
-        expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
-        expect(result).toEqual([]);
-    });
+		expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
+		expect(result).toEqual([]);
+	});
 
-    it("should return an empty list if the directory is empty", async () => {
-        fs.readdir.mockResolvedValue([]);
+	it("should return an empty list if the directory is empty", async () => {
+		fs.readdir.mockResolvedValue([]);
 
-        const result = await fileSystem.getSfsFiles(mockDirectoryPath);
+		const result = await fileSystem.getSfsFiles(mockDirectoryPath);
 
-        expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
-        expect(result).toEqual([]);
-    });
+		expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
+		expect(result).toEqual([]);
+	});
 
-    it("should return an empty list if an error occurs while reading the directory", async () => {
-        fs.readdir.mockRejectedValue(new Error("Unknown error"));
+	it("should return an empty list if an error occurs while reading the directory", async () => {
+		fs.readdir.mockRejectedValue(new Error("Unknown error"));
 
-        const result = await fileSystem.getSfsFiles(mockDirectoryPath);
+		const result = await fileSystem.getSfsFiles(mockDirectoryPath);
 
-        expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
-        expect(result).toEqual([]);
-    });
+		expect(fs.readdir).toHaveBeenCalledWith(mockDirectoryPath, { withFileTypes: true });
+		expect(result).toEqual([]);
+	});
 });
