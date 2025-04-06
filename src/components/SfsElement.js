@@ -91,10 +91,16 @@ export default class SfsElement {
 	/**
 	 * Handles the click event for the element.
 	 * Executes the provided callback and triggers the `onSaveSelect` method.
+	 * @param {MouseEvent} evt - The click event on the UI element
 	 */
-	#onClick() {
-		content.onSaveSelect(this.#sfsFile);
-		this.#clickCallback(this.#sfsFile.path);
+	#onClick(evt) {
+		if (this.isSelected()) {
+			evt.stopPropagation();
+			evt.preventDefault();
+		} else {
+			content.onSaveSelect(this.#sfsFile);
+			this.#clickCallback(this.#sfsFile.path);
+		}
 	}
 
 	/**
