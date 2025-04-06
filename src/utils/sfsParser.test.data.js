@@ -23,10 +23,14 @@ const CONTENT_FULL = `GAME {
         Science
         {
             id = science@tempId
+            sci = 5
+            cap = 10
         }
         Science
         {
             id = science2@tempId2
+            sci = 6
+            cap = 12
         }
     }
     SCENARIO
@@ -59,6 +63,8 @@ const CONTENT_NO_VERSION = `GAME {
         Science
         {
             id = science@tempId
+            sci = 1.2
+            cap = 2.6
         }
     }
     SCENARIO
