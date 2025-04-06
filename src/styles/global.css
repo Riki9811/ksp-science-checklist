@@ -18,6 +18,10 @@
 
 		--borderCol-main: #181a1f;
 		--borderCol-highlight: #919295;
+
+        --scrollbarCol: #383e4a99;
+        --scrollbarCol-hover: #383e4acc;
+        --scrollbarCol-active: #383e4a;
 	}
 }
 
@@ -35,6 +39,10 @@
 
 		--borderCol-main: #b6c1d7;
 		--borderCol-highlight: #222d44;
+
+        --scrollbarCol: #ffffff4d;
+        --scrollbarCol-hover: #ffffff66;
+        --scrollbarCol-active: #ffffff80;
 	}
 }
 
@@ -98,6 +106,13 @@ button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: var(--bgCol-hover);
-	border-radius: 0.25rem;
+	background-color: var(--scrollbarCol);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--scrollbarCol-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+	background-color: var(--scrollbarCol-active);
 }

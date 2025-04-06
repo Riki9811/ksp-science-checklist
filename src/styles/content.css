@@ -7,8 +7,13 @@
 }
 
 #main-content {
-	display: flex;
-	flex-direction: column;
+	padding: 1rem;
+	overflow: hidden auto;
 	user-select: text;
 	height: 100%;
+}
+
+#main-content::-webkit-scrollbar {
+	width: 0.5rem;
+	height: 0.5rem;
 }
