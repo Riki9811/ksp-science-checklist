@@ -7,6 +7,13 @@ export default class ScienceCell {
 	#element;
 
 	/**
+	 * @type {string}
+	 * @private
+	 * @description The id of the science experiment.
+	 */
+	#id;
+
+	/**
 	 * @type {number}
 	 * @private
 	 * @description The amount of science points collected.
@@ -25,12 +32,14 @@ export default class ScienceCell {
 	 * @param {number} collected - The amount of science points collected.
 	 * @param {number} total - The total amount of science points available.
 	 */
-	constructor(collected, total) {
+	constructor(id, collected, total) {
+		this.#id = id;
 		this.#collected = collected;
 		this.#total = total;
 
 		this.#element = document.createElement("div");
 		this.#element.classList.add("science-cell");
+		this.#element.dataset.experiment = id;
 		this.#updateUI();
 	}
 

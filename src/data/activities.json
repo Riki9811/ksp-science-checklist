@@ -1,0 +1,20 @@
+[
+	{ "name": "asteroidSample", "requiresAtmosphere": false },
+	{ "name": "atmosphereAnalysis", "requiresAtmosphere": true },
+	{ "name": "barometerScan", "requiresAtmosphere": false },
+	{ "name": "cometSample_short", "requiresAtmosphere": false },
+	{ "name": "cometSample_intermediate", "requiresAtmosphere": false },
+	{ "name": "cometSample_long", "requiresAtmosphere": false },
+	{ "name": "cometSample_interstellar", "requiresAtmosphere": false },
+	{ "name": "crewReport", "requiresAtmosphere": false },
+	{ "name": "evaScience", "requiresAtmosphere": false },
+	{ "name": "evaReport", "requiresAtmosphere": false },
+	{ "name": "gravityScan", "requiresAtmosphere": false },
+	{ "name": "infraredTelescope", "requiresAtmosphere": false },
+	{ "name": "magnetometer", "requiresAtmosphere": false },
+	{ "name": "mobileMaterialsLab", "requiresAtmosphere": false },
+	{ "name": "mysteryGoo", "requiresAtmosphere": false },
+	{ "name": "seismicScan", "requiresAtmosphere": false },
+	{ "name": "surfaceSample", "requiresAtmosphere": false },
+	{ "name": "temperatureScan", "requiresAtmosphere": false }
+]

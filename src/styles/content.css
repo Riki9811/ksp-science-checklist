@@ -17,3 +17,21 @@
 	width: 0.5rem;
 	height: 0.5rem;
 }
+
+#main-content .table-title {
+	padding-bottom: 0.5rem;
+	font-size: 150%;
+	font-weight: bold;
+	display: flex;
+    align-items: baseline;
+}
+
+#main-content .table-title:not(:first-child) {
+	padding-top: 1.5rem;
+}
+
+#main-content .table-sub-title {
+	margin-left: 0.5rem;
+	font-size: 70%;
+	color: var(--textCol-secondary);
+}

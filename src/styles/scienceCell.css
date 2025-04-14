@@ -1,6 +1,4 @@
 .science-cell {
-	width: 4rem;
-	height: 4rem;
 	text-align: center;
 	display: grid;
 	align-content: center;
@@ -10,22 +8,19 @@
 	animation-timing-function: linear;
 	animation-delay: calc(-1s * var(--percent));
 	background-color: hsl(var(--hue) var(--saturation) var(--lightness));
-}
-
-.science-cell {
 	color: black;
 }
 
 .science-cell-empty {
 	font-weight: bold;
-	background-color: #cc0a0a;
+	background-color: #8e0202;
 	color: #ffffff;
 }
 
 .science-cell-full {
 	font-weight: bold;
-	background-color: #0ccd0c;
-	color: #1c2538;
+	background-color: #138a13;
+	color: #ffffff;
 }
 
 @keyframes theme-gradient {

@@ -1,0 +1,51 @@
+.science-grid {
+	display: grid;
+	color: var(--textCol);
+	border: 0.22rem solid var(--borderCol-main);
+}
+
+.empty-corner {
+	border-bottom: 0.065rem solid var(--borderCol-main);
+	border-right: 0.065rem solid var(--borderCol-main);
+}
+
+.grid-header,
+.grid-row-header {
+	font-weight: bold;
+	border: 0.065rem solid var(--borderCol-main);
+	padding: 0.5rem;
+	display: grid;
+	align-items: center;
+	justify-items: stretch;
+}
+
+.grid-header {
+	border-top: none;
+}
+
+.grid-header > p {
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.grid-row-header {
+	border-left: none;
+}
+
+.grid-cell {
+	border: 0.065rem solid var(--borderCol-main);
+}
+
+.grid-cell-uncollected {
+	border: 0.065rem solid var(--borderCol-main);
+}
+
+.grid-cell-spanning {
+	display: grid;
+}
+
+.empty-cell {
+	background-color: var(--borderCol-main);
+}

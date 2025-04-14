@@ -38,7 +38,7 @@ function createWindow() {
 
 	// Open the DevTools.
 	newWindow.webContents.on("did-finish-load", async () => {
-		newWindow.webContents.openDevTools();
+        // newWindow.webContents.openDevTools();
 	});
 
 	return newWindow;
@@ -198,5 +198,34 @@ ipcMain.on("onTabSelect", (_, selectedTab) => {
 // Handle save file selection and notify all renderer processes
 ipcMain.on("onSaveSelect", (_, selectedSave) => {
 	appWindow.webContents.send("updateContent", { type: "save", value: selectedSave });
+});
+//#endregion
+
+//#region Json Data
+ipcMain.handle("getJsonData", async () => {
+	const dataPath = join(app.getAppPath(), "src", "data");
+
+	// TODO: avoid reading the files each time. Needs rewriting in the future
+	const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
+	const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
+	const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
+
+	// TODO: better error handling
+	if (activitiesResult.code !== 0) {
+		console.error(`Could not load activities.json`);
+	}
+	if (celestialBodiesResult.code !== 0) {
+		console.error(`Could not load celestialBodiesResult.json`);
+	}
+	if (situationsResult.code !== 0) {
+		console.error(`Could not load situationsResult.json`);
+	}
+
+    // TODO: implement validation before returning (json has correct structure?)
+	return {
+		activities: JSON.parse(activitiesResult.content),
+		celestialBodies: JSON.parse(celestialBodiesResult.content),
+		situations: JSON.parse(situationsResult.content)
+	};
 });
 //#endregion

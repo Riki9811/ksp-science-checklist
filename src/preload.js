@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
 	getRawFolders: () => ipcRenderer.invoke("getRawFolders"),
-	exploreFolder: (folderPath) => ipcRenderer.invoke("exploreFolder", folderPath)
+	exploreFolder: (folderPath) => ipcRenderer.invoke("exploreFolder", folderPath),
+	getJsonData: () => ipcRenderer.invoke("getJsonData")
 });
 
 contextBridge.exposeInMainWorld("darkMode", {
