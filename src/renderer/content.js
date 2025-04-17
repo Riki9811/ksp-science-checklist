@@ -81,9 +81,11 @@ async function updateContent() {
 		return true;
 	});
 
-	constructCraftRecoveryTable(bodyInfo);
+	// TODO: fix for bodies without biomes
 	constructSituationTables(jsonData, bodyInfo);
 	constructDeployablesTable(jsonData, bodyInfo);
+	constructROCScienceTable(bodyInfo);
+	constructCraftRecoveryTable(bodyInfo);
 
 	// Restore list of all experiments (done because I remove used experiments to the show un-used to user)
 	scienceData.experiments = [...allExperiments];
@@ -115,7 +117,7 @@ function constructTableTitle(title, recordCount, totPoints) {
 }
 
 function formatCamelCase(s) {
-	var newS = s.replace(/([A-Z])/g, " $1").trim();
+	var newS = s.replace(/([A-Z][^A-Z])/g, " $1").trim();
 	return newS.charAt(0).toUpperCase() + newS.slice(1);
 }
 //#endregion
@@ -195,17 +197,19 @@ function constructCraftRecoveryTable(bodyInfo) {
 
 	constructTableTitle("Craft Recovery", recordCount, totPoints);
 
-	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns);
+	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns, true);
 	tables.push(newTable);
 }
 //#endregion
 
 //#region Deployables Table
 function constructDeployablesTable(jsonData, bodyInfo) {
+	if (!bodyInfo.isLandable) return;
+
 	let recordCount = 0;
 	let totPoints = 0;
 
-	const rowHeaders = [bodyInfo.name];
+	const rowHeaders = [`${bodyInfo.name} surface`];
 	const columnHeaders = jsonData.deployedExperiments.map((deployable) => formatCamelCase(deployable.name.replace("deployed", "")));
 
 	const columns = jsonData.deployedExperiments.map((deployable) => {
@@ -219,7 +223,33 @@ function constructDeployablesTable(jsonData, bodyInfo) {
 
 	constructTableTitle("Doployables", recordCount, totPoints);
 
-	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns);
+	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns, true);
+	tables.push(newTable);
+}
+//#endregion
+
+//#region ROCScience Table
+function constructROCScienceTable(bodyInfo) {
+	if (!bodyInfo.ROCScience || bodyInfo.ROCScience.length === 0) return;
+
+	let recordCount = 0;
+	let totPoints = 0;
+
+	const rowHeaders = ["Scan/Analysis"];
+	const columnHeaders = bodyInfo.ROCScience.map((ROCScience) => formatCamelCase(ROCScience.replace("ROCScience_", "")));
+
+	const columns = bodyInfo.ROCScience.map((ROCScience) => {
+		const experiment = popExperimentById(`${ROCScience}@${bodyInfo.name}SrfLanded`);
+		if (experiment && experiment.total > 0) {
+			recordCount++;
+			totPoints += experiment.collected;
+		}
+		return [experiment];
+	});
+
+	constructTableTitle("Surface features", recordCount, totPoints);
+
+	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns, true);
 	tables.push(newTable);
 }
 //#endregion

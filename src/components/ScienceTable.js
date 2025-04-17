@@ -7,18 +7,21 @@ export default class ScienceTable {
 	 * @param {Array<string>} rowHeaders - The rows of the table (e.g., biomes or a single row for recovery bonuses).
 	 * @param {Array<string>} columnHeaders - The columns of the table (e.g., experiments or recovery types).
 	 * @param {Object} columns - An object containing the data for each cell. Keys should be in the format `[row]@[column]` and values should be `{ collected, total }` or `null` for empty cells.
+	 * @param {boolean} [isSmallTable=false] - Indicates wether the table is small and doesn't need to be as wide as possible. DEFAULT = false
 	 */
-	constructor(container, rowHeaders, columnHeaders, columns) {
+	constructor(container, rowHeaders, columnHeaders, columns, isSmallTable = false) {
 		this.container = container;
 		this.rowHeaders = rowHeaders;
 		this.columnHeaders = columnHeaders;
 		this.columns = columns;
+		this.isSmallTable = isSmallTable;
 
 		// List to store all ScienceCell instances
 		this.scienceCells = [];
 
 		this.grid = document.createElement("div");
 		this.grid.classList.add("science-grid");
+		this.grid.classList.toggle("science-grid-small", this.isSmallTable);
 		this.container.appendChild(this.grid);
 
 		this.#buildGrid();

@@ -4,6 +4,11 @@
 	border: 0.22rem solid var(--borderCol-main);
 }
 
+.science-grid-small {
+    max-width: 100%;
+	width: max-content;
+}
+
 .empty-corner {
 	border-bottom: 0.065rem solid var(--borderCol-main);
 	border-right: 0.065rem solid var(--borderCol-main);
