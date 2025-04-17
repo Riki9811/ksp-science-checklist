@@ -5,7 +5,7 @@
 }
 
 .science-grid-small {
-    max-width: 100%;
+	max-width: 100%;
 	width: max-content;
 }
 
@@ -47,8 +47,9 @@
 	border: 0.065rem solid var(--borderCol-main);
 }
 
-.grid-cell-spanning {
-	display: grid;
+.grid-cell > .science-cell {
+	width: 100%;
+	height: 100%;
 }
 
 .empty-cell {

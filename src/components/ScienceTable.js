@@ -42,7 +42,11 @@ export default class ScienceTable {
 	 */
 	#setGridTemplate() {
 		this.grid.style.gridTemplateRows = `repeat(${this.rowHeaders.length + 1}, 1fr)`;
-		this.grid.style.gridTemplateColumns = `auto repeat(${this.columnHeaders.length}, minmax(0, auto))`;
+		if (this.isSmallTable) {
+			this.grid.style.gridTemplateColumns = `repeat(${this.columnHeaders.length + 1}, 1fr)`;
+		} else {
+			this.grid.style.gridTemplateColumns = `auto repeat(${this.columnHeaders.length}, minmax(0, auto))`;
+		}
 	}
 
 	/**
@@ -130,7 +134,6 @@ export default class ScienceTable {
 			if (spanningCellData.total === 0) {
 				cellDiv.classList.add("grid-cell-uncollected");
 			} else {
-				cellDiv.classList.add("grid-cell-spanning");
 				const spanningCell = new ScienceCell(spanningCellData.id, spanningCellData.collected, spanningCellData.total);
 				this.scienceCells.push(spanningCell);
 				cellDiv.appendChild(spanningCell.element);
