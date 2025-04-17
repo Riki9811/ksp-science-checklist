@@ -1,0 +1,6 @@
+[
+	{ "name": "deployedGooObservation", "requiresAtmosphere": false, "requiresVacuum": false },
+	{ "name": "deployedIONCollector", "requiresAtmosphere": false, "requiresVacuum": true },
+	{ "name": "deployedSeismicSensor", "requiresAtmosphere": false, "requiresVacuum": false },
+	{ "name": "deployedWeatherReport", "requiresAtmosphere": true, "requiresVacuum": false }
+]

@@ -38,7 +38,7 @@ function createWindow() {
 
 	// Open the DevTools.
 	newWindow.webContents.on("did-finish-load", async () => {
-        // newWindow.webContents.openDevTools();
+		// newWindow.webContents.openDevTools();
 	});
 
 	return newWindow;
@@ -209,6 +209,7 @@ ipcMain.handle("getJsonData", async () => {
 	const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
 	const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
 	const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
+	const deployedExperiments = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
 
 	// TODO: better error handling
 	if (activitiesResult.code !== 0) {
@@ -220,12 +221,16 @@ ipcMain.handle("getJsonData", async () => {
 	if (situationsResult.code !== 0) {
 		console.error(`Could not load situationsResult.json`);
 	}
+	if (deployedExperiments.code !== 0) {
+		console.error(`Could not load deployedExperiments.json`);
+	}
 
-    // TODO: implement validation before returning (json has correct structure?)
+	// TODO: implement validation before returning (json has correct structure?)
 	return {
 		activities: JSON.parse(activitiesResult.content),
 		celestialBodies: JSON.parse(celestialBodiesResult.content),
-		situations: JSON.parse(situationsResult.content)
+		situations: JSON.parse(situationsResult.content),
+		deployedExperiments: JSON.parse(deployedExperiments.content)
 	};
 });
 //#endregion

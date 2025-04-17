@@ -74,8 +74,16 @@ async function updateContent() {
 		return true;
 	});
 
-	constructCraftRecoveryTable(jsonData, bodyInfo);
+	// Ignore all deplyed experiments that are not possible on the selected body
+	jsonData.deployedExperiments = jsonData.deployedExperiments.filter((deployable) => {
+		if (deployable.requiresAtmosphere && !bodyInfo.hasAtmosphere) return false;
+		if (deployable.requiresVacuum && bodyInfo.hasAtmosphere) return false;
+		return true;
+	});
+
+	constructCraftRecoveryTable(bodyInfo);
 	constructSituationTables(jsonData, bodyInfo);
+	constructDeployablesTable(jsonData, bodyInfo);
 
 	// Restore list of all experiments (done because I remove used experiments to the show un-used to user)
 	scienceData.experiments = [...allExperiments];
@@ -169,7 +177,7 @@ function generateSituationTableData(activities, bodyInfo, situation) {
 //#endregion
 
 //#region Craft Recovery Table
-function constructCraftRecoveryTable(jsonData, bodyInfo) {
+function constructCraftRecoveryTable(bodyInfo) {
 	let recordCount = 0;
 	let totPoints = 0;
 
@@ -186,6 +194,30 @@ function constructCraftRecoveryTable(jsonData, bodyInfo) {
 	});
 
 	constructTableTitle("Craft Recovery", recordCount, totPoints);
+
+	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns);
+	tables.push(newTable);
+}
+//#endregion
+
+//#region Deployables Table
+function constructDeployablesTable(jsonData, bodyInfo) {
+	let recordCount = 0;
+	let totPoints = 0;
+
+	const rowHeaders = [bodyInfo.name];
+	const columnHeaders = jsonData.deployedExperiments.map((deployable) => formatCamelCase(deployable.name.replace("deployed", "")));
+
+	const columns = jsonData.deployedExperiments.map((deployable) => {
+		const experiment = popExperimentById(`${deployable.name}@${bodyInfo.name}SrfLanded`);
+		if (experiment && experiment.total > 0) {
+			recordCount++;
+			totPoints += experiment.collected;
+		}
+		return [experiment];
+	});
+
+	constructTableTitle("Doployables", recordCount, totPoints);
 
 	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns);
 	tables.push(newTable);
