@@ -66,10 +66,6 @@ async function updateContent() {
 	bodyInfo.biomes.sort();
 	bodyInfo.specialBiomes.sort();
 
-	// TODO: implement showing asteroid and comet samples
-	// Ignore asteroid and comet samples
-	jsonData.activities = jsonData.activities.filter((activity) => !activity.name.startsWith("comet") && !activity.name.startsWith("asteroid"));
-
 	// Ignore all situations that are not possible on the selected body
 	jsonData.situations = jsonData.situations.filter((situation) => {
 		if (situation.requiresAtmosphere && !bodyInfo.hasAtmosphere) return false;
@@ -78,29 +74,61 @@ async function updateContent() {
 		return true;
 	});
 
-	// Construct the table data for each situation
-	const tablesData = jsonData.situations.map((situation) => constructTableData(jsonData.activities, bodyInfo, situation));
-
-	for (const tableData of tablesData) {
-		const newTitle = document.createElement("h1");
-		newTitle.classList.add("table-title");
-		newTitle.textContent = `${tableData.name}:`;
-		const newSubTitle = document.createElement("p");
-		newSubTitle.classList.add("table-sub-title");
-		newSubTitle.textContent = `${tableData.recordCount} science records, ${tableData.totPoints} points.`;
-
-		newTitle.appendChild(newSubTitle);
-		mainContent.appendChild(newTitle);
-
-		const newTable = new ScienceTable(mainContent, tableData.biomes, tableData.activities, tableData.columns);
-		tables.push(newTable);
-	}
+	constructCraftRecoveryTable(jsonData, bodyInfo);
+	constructSituationTables(jsonData, bodyInfo);
 
 	// Restore list of all experiments (done because I remove used experiments to the show un-used to user)
 	scienceData.experiments = [...allExperiments];
 }
 
-function constructTableData(activities, bodyInfo, situation) {
+//#region Table Common Functions
+function popExperimentById(id) {
+	if (!scienceData) return null;
+
+	const index = scienceData.experiments.findIndex((experiment) => experiment.id === id);
+
+	if (index < 0) return { id, collected: 0, total: 0 };
+
+	const splicedData = scienceData.experiments.splice(index, 1);
+	return splicedData[0];
+}
+
+function constructTableTitle(title, recordCount, totPoints) {
+	const newTitle = document.createElement("h1");
+	newTitle.classList.add("table-title");
+	newTitle.textContent = `${title}:`;
+
+	const newSubTitle = document.createElement("p");
+	newSubTitle.classList.add("table-sub-title");
+	newSubTitle.textContent = `${recordCount} science records, ${Math.round(totPoints * 10) / 10} points.`;
+
+	newTitle.appendChild(newSubTitle);
+	mainContent.appendChild(newTitle);
+}
+
+function formatCamelCase(s) {
+	var newS = s.replace(/([A-Z])/g, " $1").trim();
+	return newS.charAt(0).toUpperCase() + newS.slice(1);
+}
+//#endregion
+
+//#region Situation Tables
+function constructSituationTables(jsonData, bodyInfo) {
+	// Ignore asteroid and comet samples
+	const filteredActivities = jsonData.activities.filter((activity) => !activity.name.startsWith("comet") && !activity.name.startsWith("asteroid"));
+
+	// Construct the table data for each situation
+	const tablesData = jsonData.situations.map((situation) => generateSituationTableData(filteredActivities, bodyInfo, situation));
+
+	for (const tableData of tablesData) {
+		constructTableTitle(tableData.name, tableData.recordCount, tableData.totPoints);
+
+		const newTable = new ScienceTable(mainContent, tableData.biomes, tableData.activities, tableData.columns);
+		tables.push(newTable);
+	}
+}
+
+function generateSituationTableData(activities, bodyInfo, situation) {
 	let recordCount = 0;
 	let totPoints = 0;
 
@@ -130,22 +158,36 @@ function constructTableData(activities, bodyInfo, situation) {
 	});
 
 	return {
-		name: situation.name,
-		biomes: bodyInfo.biomes,
-		activities: activities.map((activity) => activity.name),
+		name: formatCamelCase(situation.name),
+		biomes: bodyInfo.biomes.map(formatCamelCase),
+		activities: activities.map((activity) => formatCamelCase(activity.name)),
 		columns,
 		recordCount,
-		totPoints: Math.round(totPoints * 10) / 10
+		totPoints
 	};
 }
+//#endregion
 
-function popExperimentById(id) {
-	if (!scienceData) return null;
+//#region Craft Recovery Table
+function constructCraftRecoveryTable(jsonData, bodyInfo) {
+	let recordCount = 0;
+	let totPoints = 0;
 
-	const index = scienceData.experiments.findIndex((experiment) => experiment.id === id);
+	const rowHeaders = [bodyInfo.name];
+	const columnHeaders = bodyInfo.recovery.map(formatCamelCase);
 
-	if (index < 0) return { id, collected: 0, total: 0 };
+	const columns = bodyInfo.recovery.map((recovery) => {
+		const experiment = popExperimentById(`recovery@${bodyInfo.name}${recovery}`);
+		if (experiment && experiment.total > 0) {
+			recordCount++;
+			totPoints += experiment.collected;
+		}
+		return [experiment];
+	});
 
-	const splicedData = scienceData.experiments.splice(index, 1);
-	return splicedData[0];
+	constructTableTitle("Craft Recovery", recordCount, totPoints);
+
+	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns);
+	tables.push(newTable);
 }
+//#endregion
