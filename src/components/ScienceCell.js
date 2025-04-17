@@ -34,8 +34,8 @@ export default class ScienceCell {
 	 */
 	constructor(id, collected, total) {
 		this.#id = id;
-		this.#collected = collected;
-		this.#total = total;
+		this.#collected = collected.toFixed(1);
+		this.#total = total.toFixed(1);
 
 		this.#element = document.createElement("div");
 		this.#element.classList.add("science-cell");
@@ -61,13 +61,16 @@ export default class ScienceCell {
 		// Clear existing content
 		this.#element.innerHTML = "";
 
+		// Add it to data
+		this.#element.dataset.id = this.#id;
+
 		// Add two <p> tags for collected and total points
 		const collectedP = document.createElement("p");
-		collectedP.textContent = `${this.#collected.toFixed(1)}`;
+		collectedP.textContent = `${this.#collected}`;
 		this.#element.appendChild(collectedP);
 
 		const totalP = document.createElement("p");
-		totalP.textContent = `/${this.#total.toFixed(1)}`;
+		totalP.textContent = `/${this.#total}`;
 		this.#element.appendChild(totalP);
 	}
 

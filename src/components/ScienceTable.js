@@ -97,7 +97,7 @@ export default class ScienceTable {
 			const cellData = this.columns[colIndex];
 			if (cellData === null) {
 				this.#addEmptyCell();
-			} else if (cellData.length === 1) {
+			} else if (cellData.length === 1 && this.rowHeaders.length > 1) {
 				this.#addSpanningCell(cellData[0], rowIndex);
 			} else if (cellData.length === this.rowHeaders.length) {
 				this.#addRegularCell(cellData[rowIndex]);
