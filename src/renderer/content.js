@@ -81,7 +81,6 @@ async function updateContent() {
 		return true;
 	});
 
-	// TODO: fix for bodies without biomes
 	constructSituationTables(jsonData, bodyInfo);
 	constructDeployablesTable(jsonData, bodyInfo);
 	constructROCScienceTable(bodyInfo);
