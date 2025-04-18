@@ -33,13 +33,9 @@ function createWindow() {
 
 	// hide the menu
 	newWindow.setMenuBarVisibility(false);
+
 	// and load the index.html of the app.
 	newWindow.loadFile(join(app.getAppPath(), "src", "index.html"));
-
-	// Open the DevTools.
-	newWindow.webContents.on("did-finish-load", async () => {
-		// newWindow.webContents.openDevTools();
-	});
 
 	return newWindow;
 }

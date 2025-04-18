@@ -148,7 +148,7 @@ function generateSituationTableData(activities, bodyInfo, situation) {
 		const activityType = situation.activityTypes[activity.name];
 
 		if (!activityType) return null;
-		else if (activityType === "global") {
+		else if (activityType === "global" || bodyInfo.biomes.length === 0) {
 			const experiment = popExperimentById(`${activity.name}@${bodyInfo.name}${situation.name}`);
 			if (experiment && experiment.total > 0) {
 				recordCount++;
@@ -169,7 +169,7 @@ function generateSituationTableData(activities, bodyInfo, situation) {
 
 	return {
 		name: formatCamelCase(situation.name),
-		biomes: bodyInfo.biomes.map(formatCamelCase),
+		biomes: bodyInfo.biomes.length > 0 ? bodyInfo.biomes.map(formatCamelCase) : [`${bodyInfo.name} (global)`],
 		activities: activities.map((activity) => formatCamelCase(activity.name)),
 		columns,
 		recordCount,
