@@ -23,7 +23,7 @@
 	font-size: 150%;
 	font-weight: bold;
 	display: flex;
-    align-items: baseline;
+	align-items: baseline;
 }
 
 #main-content .table-title:not(:first-child) {

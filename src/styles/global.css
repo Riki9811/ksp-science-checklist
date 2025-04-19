@@ -15,6 +15,7 @@
 		--bgCol-alt: #21252b;
 		--bgCol-highlight: #383e4a;
 		--bgCol-hover: #2c313a;
+		--bgCol-toast: #0e0e11;
 
 		--borderCol-main: #181a1f;
 		--borderCol-highlight: #919295;
@@ -36,6 +37,7 @@
 		--bgCol-alt: #d5dae5;
 		--bgCol-highlight: #cbdaf7;
 		--bgCol-hover: #eef0f6;
+		--bgCol-toast: #f2f3f8;
 
 		--borderCol-main: #b6c1d7;
 		--borderCol-highlight: #222d44;
@@ -115,4 +117,14 @@ button:hover {
 
 ::-webkit-scrollbar-thumb:active {
 	background-color: var(--scrollbarCol-active);
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-column {
+	display: flex;
+	flex-direction: column;
 }
