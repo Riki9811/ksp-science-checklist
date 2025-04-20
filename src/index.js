@@ -92,22 +92,36 @@ ipcMain.handle("getRawFolders", async () => {
 
 	if (result.code === 0) return result.folders;
 
-	// TODO: show error to the user and suggest solutions
-	console.error(`Error ${result.code} reading install dir.`);
-	switch (result.code) {
-		case 1:
-			console.error(`No 'saves' folder found inside: ${KSP_INSTALL_DIR}`);
-			return [];
-		case 2:
-			console.error(`Could not access: ${KSP_INSTALL_DIR}\\saves`);
-			return [];
-		case 3:
-			console.error(`Path is not a folder: ${KSP_INSTALL_DIR}`);
-			return [];
-		case -1:
-			console.error("Unkown error occurred. ¯\\_(ツ)_/¯");
-			return [];
-	}
+	const ERRORS = {
+		1: {
+			title: "KSP Install Directory Error",
+			lines: [
+				{ text: "No 'saves' folder found inside:" },
+				{ text: `${KSP_INSTALL_DIR}`, indented: true, secondary: true, italic: true },
+				{ text: "Please check that the path provided as the KSP install directory is correct." }
+			]
+		},
+		2: {
+			title: "KSP Install Directory Error",
+			lines: [
+				{ text: "Could not access:" },
+				{ text: `${join(KSP_INSTALL_DIR, "saves")}`, indented: true, secondary: true, italic: true },
+				{ text: "Please ensure 'read' permissions are available or try running the program as an administrator." }
+			]
+		},
+		3: {
+			title: "KSP Install Directory Error",
+			lines: [
+				{ text: "KSP Install path is not a folder:" },
+				{ text: `${KSP_INSTALL_DIR}`, indented: true, secondary: true, italic: true },
+				{ text: "Please verify the path and try refreshing." }
+			]
+		},
+		"-1": { title: "KSP Install Directory Error", lines: "Unkown error occurred. ¯\\_(ツ)_/¯" }
+	};
+
+	appWindow.webContents.send("toasts/onBackendError", ERRORS[result.code]);
+	return [];
 });
 
 ipcMain.handle("exploreFolder", async (_, folderPath) => {
@@ -123,8 +137,30 @@ ipcMain.handle("exploreFolder", async (_, folderPath) => {
 			sfsPaths.map(async (sfsPath) => {
 				const result = await utils.fileSystem.readFileContents(sfsPath);
 
-				// TODO: show error to user
-				if (result.code !== 0) return null;
+				const ERRORS = {
+					1: {
+						title: "File Read Error",
+						lines: [
+							{ text: "File: ", inLine: true },
+							{ text: `${basename(sfsPath)}`, secondary: true, italic: true, inLine: true },
+							{ text: " does not exist." }
+						]
+					},
+					2: {
+						title: "File Read Error",
+						lines: [
+							{ text: "Could not access: ", inLine: true },
+							{ text: `${sfsPath}`, secondary: true, italic: true },
+							{ text: "Please ensure 'read' permissions are available or try running the program as an administrator." }
+						]
+					},
+					"-1": { title: "File Read Error", lines: "Unkown error occurred. ¯\\_(ツ)_/¯" }
+				};
+
+				if (result.code !== 0) {
+					appWindow.webContents.send("toasts/onBackendError", ERRORS[result.code]);
+					return null;
+				}
 
 				const sfsFile = utils.parseSfs(result.content, sfsPath);
 
@@ -207,18 +243,45 @@ ipcMain.handle("getJsonData", async () => {
 	const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
 	const deployedExperiments = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
 
-	// TODO: better error handling
 	if (activitiesResult.code !== 0) {
-		console.error(`Could not load activities.json`);
+		appWindow.webContents.send("toasts/onBackendError", {
+			title: "App Data Error",
+			lines: [
+				{ text: "Could not load: ", inLine: true },
+				{ text: "activities.json", secondary: true, italic: true },
+				{ text: "File either missing or not accessible" }
+			]
+		});
 	}
 	if (celestialBodiesResult.code !== 0) {
-		console.error(`Could not load celestialBodiesResult.json`);
+		appWindow.webContents.send("toasts/onBackendError", {
+			title: "App Data Error",
+			lines: [
+				{ text: "Could not load: ", inLine: true },
+				{ text: "celestialBodies.json", secondary: true, italic: true },
+				{ text: "File either missing or not accessible" }
+			]
+		});
 	}
 	if (situationsResult.code !== 0) {
-		console.error(`Could not load situationsResult.json`);
+		appWindow.webContents.send("toasts/onBackendError", {
+			title: "App Data Error",
+			lines: [
+				{ text: "Could not load: ", inLine: true },
+				{ text: "situations.json", secondary: true, italic: true },
+				{ text: "File either missing or not accessible" }
+			]
+		});
 	}
 	if (deployedExperiments.code !== 0) {
-		console.error(`Could not load deployedExperiments.json`);
+		appWindow.webContents.send("toasts/onBackendError", {
+			title: "App Data Error",
+			lines: [
+				{ text: "Could not load: ", inLine: true },
+				{ text: "deployedExperiments.json", secondary: true, italic: true },
+				{ text: "File either missing or not accessible" }
+			]
+		});
 	}
 
 	// TODO: implement validation before returning (json has correct structure?)

@@ -3,7 +3,20 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("api", {
 	getRawFolders: () => ipcRenderer.invoke("getRawFolders"),
 	exploreFolder: (folderPath) => ipcRenderer.invoke("exploreFolder", folderPath),
-	getJsonData: () => ipcRenderer.invoke("getJsonData")
+	getJsonData: () => ipcRenderer.invoke("getJsonData"),
+
+	onBackendInfo: (callback) => {
+		ipcRenderer.on("toasts/onBackendInfo", (_, data) => callback(data));
+	},
+	onBackendSuccess: (callback) => {
+		ipcRenderer.on("toasts/onBackendSuccess", (_, data) => callback(data));
+	},
+	onBackendWarning: (callback) => {
+		ipcRenderer.on("toasts/onBackendWarning", (_, data) => callback(data));
+	},
+	onBackendError: (callback) => {
+		ipcRenderer.on("toasts/onBackendError", (_, data) => callback(data));
+	}
 });
 
 contextBridge.exposeInMainWorld("darkMode", {

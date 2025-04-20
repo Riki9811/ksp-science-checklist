@@ -1,3 +1,4 @@
+import PopupToast from "../components/PopupToast.js";
 import ScienceTable from "../components/ScienceTable.js";
 
 const mainContent = document.getElementById("main-content");
@@ -56,10 +57,9 @@ async function updateContent() {
 
 	// Select current body info
 	const bodyInfo = jsonData.celestialBodies.find((body) => body.name === selectedBody);
-	if (!bodyInfo) {
-		// TODO: implement correct error handling
-		console.error(`Celestial body "${selectedBody}" not found.`);
-		return;
+	if (!false) {
+		PopupToast.showError("Data Missing", `Missing data for selected celestial body: ${selectedBody}.`);
+		// return;
 	}
 
 	// Sort biomes in alphabetical order

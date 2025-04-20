@@ -17,7 +17,7 @@
 	padding: 15px 20px;
 	border-radius: 5px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	min-width: 20%;
+	min-width: 12%;
 	max-width: 50%;
 	text-align: left;
 	position: relative;
@@ -65,6 +65,14 @@
 
 .popup-message {
 	margin: 5px 0 0;
+}
+
+.popup-message-indent {
+	margin-left: 2ch;
+}
+
+.popup-message-secondary {
+	opacity: 0.5;
 }
 
 .popup-close-button {

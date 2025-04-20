@@ -43,10 +43,38 @@ class PopupToast {
 		parent.appendChild(titleElem);
 	}
 
-	static #addMessage(message, parent) {
+	static #addMessage(lines, parent) {
+		if (lines.length === 0) return;
+
 		const messageElem = document.createElement("p");
-		messageElem.textContent = message;
 		messageElem.className = "popup-message";
+
+		lines.forEach((line) => {
+			let lineElem;
+
+			if (line.bold && line.italic) {
+				lineElem = document.createElement("b");
+				const italicElem = document.createElement("i");
+				italicElem.textContent = line.text;
+				lineElem.appendChild(italicElem);
+			} else if (line.bold) {
+				lineElem = document.createElement("b");
+				lineElem.textContent = line.text;
+			} else if (line.italic) {
+				lineElem = document.createElement("i");
+				lineElem.textContent = line.text;
+			} else {
+				lineElem = document.createElement("span");
+				lineElem.textContent = line.text;
+			}
+
+			if (line.indented) lineElem.classList.add("popup-message-indent");
+			if (line.secondary) lineElem.classList.add("popup-message-secondary");
+
+			messageElem.appendChild(lineElem);
+			if (!line.inLine) messageElem.appendChild(document.createElement("br"));
+		});
+
 		parent.appendChild(messageElem);
 	}
 
@@ -89,71 +117,40 @@ class PopupToast {
 		}
 	}
 
-	/**
-	 * Displays a generic info toast notification.
-	 * @param {string} title - The title of the notification.
-	 * @param {string} message - The message of the notification.
-	 * @param {number} [timeout] - Optional timeout in milliseconds for auto-dismissal.
-	 */
-	static showInfo(title, message, timeout = null) {
-		this.#showToast(ToastType.Info, title, message, timeout);
+	static showInfo(title, lines = [], timeout = 10000) {
+		if (typeof lines === "string" || lines instanceof String) lines = [{ text: lines }];
+		this.#showToast(ToastType.Info, title, lines, timeout);
 	}
 
-	/**
-	 * Displays a success toast notification.
-	 * @param {string} title - The title of the notification.
-	 * @param {string} message - The message of the notification.
-	 * @param {number} [timeout] - Optional timeout in milliseconds for auto-dismissal.
-	 */
-	static showSuccess(title, message, timeout = null) {
-		this.#showToast(ToastType.Success, title, message, timeout);
+	static showSuccess(title, lines = [], timeout = 10000) {
+		if (typeof lines === "string" || lines instanceof String) lines = [{ text: lines }];
+		this.#showToast(ToastType.Success, title, lines, timeout);
 	}
 
-	/**
-	 * Displays a warning toast notification.
-	 * @param {string} title - The title of the notification.
-	 * @param {string} message - The message of the notification.
-	 * @param {number} [timeout] - Optional timeout in milliseconds for auto-dismissal.
-	 */
-	static showWarning(title, message, timeout = null) {
-		this.#showToast(ToastType.Warning, title, message, timeout);
+	static showWarning(title, lines = [], timeout = 10000) {
+		if (typeof lines === "string" || lines instanceof String) lines = [{ text: lines }];
+		this.#showToast(ToastType.Warning, title, lines, timeout);
 	}
 
-	/**
-	 * Displays an error toast notification.
-	 * @param {string} title - The title of the notification.
-	 * @param {string} message - The message of the notification.
-	 * @param {number} [timeout] - Optional timeout in milliseconds for auto-dismissal.
-	 */
-	static showError(title, message, timeout = null) {
-		this.#showToast(ToastType.Error, title, message, timeout);
+	static showError(title, lines = [], timeout = 10000) {
+		if (typeof lines === "string" || lines instanceof String) lines = [{ text: lines }];
+		this.#showToast(ToastType.Error, title, lines, timeout);
 	}
 
-	/**
-	 * Displays a toast notification.
-	 * @param {ToastType} type - The type of the notification.
-	 * @param {string} title - The title of the notification.
-	 * @param {string} message - The message of the notification.
-	 * @param {number} [timeout] - Optional timeout in milliseconds for auto-dismissal.
-	 */
-	static #showToast(type, title, message, timeout = null) {
+	static #showToast(type, title, lines, timeout) {
 		let className;
 		switch (type) {
 			case ToastType.Info:
 				className = "popup-toast-info";
-				console.log(`[Info] ${title}: ${message}`);
 				break;
 			case ToastType.Success:
 				className = "popup-toast-success";
-				console.log(`[Success] ${title}: ${message}`);
 				break;
 			case ToastType.Warning:
 				className = "popup-toast-warning";
-				console.warn(`[Warning] ${title}: ${message}`);
 				break;
 			case ToastType.Error:
 				className = "popup-toast-error";
-				console.error(`[Error] ${title}: ${message}`);
 				break;
 		}
 
@@ -173,7 +170,7 @@ class PopupToast {
 		this.#addTitle(title, firstRow);
 		toast.appendChild(firstRow);
 
-		this.#addMessage(message, toast);
+		this.#addMessage(lines, toast);
 		this.#addCloseButton(toast);
 		this.#addProgressBar(timeout, toast);
 
@@ -187,8 +184,10 @@ class PopupToast {
 	 */
 	static #dismissToast(toast) {
 		toast.classList.add("popup-out");
-		toast.addEventListener("animationend", () => {
-			if (toast.parentElement === this.#container) {
+		toast.addEventListener("animationend", (evt) => {
+			const isRightAnimation = evt.animationName === "popup-out";
+			const isParentContainer = toast.parentElement === this.#container;
+			if (isRightAnimation && isParentContainer) {
 				this.#container.removeChild(toast);
 			}
 		});
