@@ -6,7 +6,7 @@ import utils from "./utils/index.js";
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP/saves";
+// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
 const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
 
 //#region Window
@@ -32,7 +32,7 @@ function createWindow() {
 		}
 	});
 
-	// hide the menu
+	// Hide the menu
 	newWindow.setMenuBarVisibility(false);
 
 	// and load the index.html of the app.
@@ -66,6 +66,8 @@ if (!isSingleInstance) {
 
 		appWindow.on("maximize", () => appWindow.webContents.send("window/onMaximize"));
 		appWindow.on("unmaximize", () => appWindow.webContents.send("window/onUnmaximize"));
+		appWindow.on("enter-full-screen", () => appWindow.webContents.send("window/onEnterFullScreen"));
+		appWindow.on("leave-full-screen", () => appWindow.webContents.send("window/onLeaveFullScreen"));
 
 		// On OS X it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
@@ -107,7 +109,9 @@ ipcMain.handle("getRawFolders", async () => {
 			lines: [
 				{ text: "Could not access:" },
 				{ text: `${join(KSP_INSTALL_DIR, "saves")}`, indented: true, secondary: true, italic: true },
-				{ text: "Please ensure 'read' permissions are available or try running the program as an administrator." }
+				{
+					text: "Please ensure 'read' permissions are available or try running the program as an administrator."
+				}
 			]
 		},
 		3: {
@@ -152,7 +156,9 @@ ipcMain.handle("exploreFolder", async (_, folderPath) => {
 						lines: [
 							{ text: "Could not access: ", inLine: true },
 							{ text: `${sfsPath}`, secondary: true, italic: true },
-							{ text: "Please ensure 'read' permissions are available or try running the program as an administrator." }
+							{
+								text: "Please ensure 'read' permissions are available or try running the program as an administrator."
+							}
 						]
 					},
 					"-1": { title: "File Read Error", lines: "Unkown error occurred. ¯\\_(ツ)_/¯" }
@@ -219,9 +225,10 @@ ipcMain.on("window/minimize", () => appWindow.minimize());
 ipcMain.on("window/maximize", () => appWindow.maximize());
 ipcMain.on("window/unmaximize", () => appWindow.unmaximize());
 ipcMain.on("window/close", () => appWindow.close());
-ipcMain.on("window/isMaximized", () => appWindow.isMaximized);
+ipcMain.handle("window/isMaximized", () => appWindow.isMaximized());
+ipcMain.handle("window/isFullScreen", () => appWindow.isFullScreen());
 
-ipcMain.on("isMacOs", () => process.platform === "darwin");
+ipcMain.handle("isMacOs", () => process.platform === "darwin");
 //#endregion
 
 //#region Content

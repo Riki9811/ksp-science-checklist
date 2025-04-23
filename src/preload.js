@@ -31,7 +31,8 @@ contextBridge.exposeInMainWorld("app", {
 	unmaximize: () => ipcRenderer.send("window/unmaximize"),
 	close: () => ipcRenderer.send("window/close"),
 
-	isMaximized: () => ipcRenderer.send("window/isMaximized"),
+	isMaximized: () => ipcRenderer.invoke("window/isMaximized"),
+	isFullScreen: () => ipcRenderer.invoke("window/isFullScreen"),
 
 	onMaximize: (callback) => {
 		ipcRenderer.on("window/onMaximize", callback);
@@ -39,8 +40,14 @@ contextBridge.exposeInMainWorld("app", {
 	onUnmaximize: (callback) => {
 		ipcRenderer.on("window/onUnmaximize", callback);
 	},
+	onEnterFullScreen: (callback) => {
+		ipcRenderer.on("window/onEnterFullScreen", callback);
+	},
+	onLeaveFullScreen: (callback) => {
+		ipcRenderer.on("window/onLeaveFullScreen", callback);
+	},
 
-	isMacOs: () => ipcRenderer.send("isMacOs")
+	isMacOs: () => ipcRenderer.invoke("isMacOs")
 });
 
 contextBridge.exposeInMainWorld("content", {

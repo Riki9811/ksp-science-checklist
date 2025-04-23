@@ -79,7 +79,7 @@ button:hover {
 #app {
 	display: grid;
 	grid-template:
-		"titlebar titlebar" 2.75rem
+		"titlebar titlebar" min-content
 		"sidebar content" auto / var(--sidebar-width) auto;
 	width: 100%;
 	height: 100%;

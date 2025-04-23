@@ -1,10 +1,20 @@
 #titlebar {
+	height: 2.75em;
 	grid-area: titlebar;
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
 	justify-content: space-between;
 	-webkit-app-region: drag;
+}
+
+#titlebar.titlebar-macos {
+	align-items: center;
+	justify-content: center;
+}
+
+#titlebar.titlebar-macos-hidden {
+	display: none;
 }
 
 #titlebar button {
