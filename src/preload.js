@@ -38,7 +38,9 @@ contextBridge.exposeInMainWorld("app", {
 	},
 	onUnmaximize: (callback) => {
 		ipcRenderer.on("window/onUnmaximize", callback);
-	}
+	},
+
+	isMacOs: () => ipcRenderer.send("isMacOs")
 });
 
 contextBridge.exposeInMainWorld("content", {

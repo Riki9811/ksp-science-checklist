@@ -24,6 +24,7 @@ function createWindow() {
 		minWidth: 700,
 		minHeight: 500,
 		titleBarStyle: "hidden",
+		trafficLightPosition: { x: 13, y: 13 },
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
@@ -219,6 +220,8 @@ ipcMain.on("window/maximize", () => appWindow.maximize());
 ipcMain.on("window/unmaximize", () => appWindow.unmaximize());
 ipcMain.on("window/close", () => appWindow.close());
 ipcMain.on("window/isMaximized", () => appWindow.isMaximized);
+
+ipcMain.on("isMacOs", () => process.platform === "darwin");
 //#endregion
 
 //#region Content

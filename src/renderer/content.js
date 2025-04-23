@@ -57,9 +57,9 @@ async function updateContent() {
 
 	// Select current body info
 	const bodyInfo = jsonData.celestialBodies.find((body) => body.name === selectedBody);
-	if (!false) {
+	if (!bodyInfo) {
 		PopupToast.showError("Data Missing", `Missing data for selected celestial body: ${selectedBody}.`);
-		// return;
+		return;
 	}
 
 	// Sort biomes in alphabetical order
