@@ -16,7 +16,7 @@ export default class MacOsTitlebar {
 		// Hide the titlebar on load if window is maximized
 		app.isFullScreen().then((fullScreen) => {
 			if (fullScreen) {
-				titleBarRoot.classList.add("titlebar-macos-hidden");
+				titleBarRoot.classList.add("titlebar-hidden");
 			}
 		});
 
@@ -25,10 +25,10 @@ export default class MacOsTitlebar {
 	}
 
 	#onEnterFullScreen() {
-		this.#parent.classList.add("titlebar-macos-hidden");
+		this.#parent.classList.add("titlebar-hidden");
 	}
 
 	#onLeaveFullScreen() {
-		this.#parent.classList.remove("titlebar-macos-hidden");
+		this.#parent.classList.remove("titlebar-hidden");
 	}
 }
