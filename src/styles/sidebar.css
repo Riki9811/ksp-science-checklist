@@ -3,7 +3,7 @@
 	overflow-y: auto;
 	background-color: var(--bgCol-alt);
 	grid-area: sidebar;
-	padding: 0.75rem;
+	padding: 0.3rem 0.75rem 0.75rem;
 	display: flex;
 	flex-direction: column;
 	white-space: nowrap;

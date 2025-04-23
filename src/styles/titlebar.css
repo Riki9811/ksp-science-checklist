@@ -13,7 +13,7 @@
 	justify-content: center;
 }
 
-#titlebar.titlebar-macos-hidden {
+#titlebar.titlebar-hidden {
 	display: none;
 }
 
@@ -45,6 +45,7 @@
 
 .titlebar-left > img {
 	margin-right: 0.6rem;
+	margin-left: 0.2rem;
 }
 
 .titlebar-right > button {
