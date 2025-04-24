@@ -34,13 +34,13 @@ export const makers = [
 		config: {
 			icon: "assets/icon.icns"
 		}
-	},
-	{
-		name: "@electron-forge/maker-wix",
-		config: {
-			icon: "assets/icon.ico"
-		}
 	}
+	// {
+	// 	name: "@electron-forge/maker-wix",
+	// 	config: {
+	// 		icon: "assets/icon.ico"
+	// 	}
+	// }
 ];
 export const plugins = [
 	{
