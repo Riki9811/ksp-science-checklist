@@ -1,9 +1,11 @@
 {
 	"name": "ksp-science-checklist",
-	"productName": "ksp-science-checklist",
+	"productName": "KSP Science Checklist",
 	"version": "1.0.0",
-	"description": "My Electron application description",
+	"description": "A desktop application that helps you track and visualize science progression in KSP",
 	"main": "src/index.js",
+	"bugs": "https://github.com/Riki9811/ksp-science-checklist/issues",
+	"homepage": "https://github.com/Riki9811/ksp-science-checklist#readme",
 	"type": "module",
 	"scripts": {
 		"start": "electron-forge start",

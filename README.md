@@ -3,9 +3,10 @@
 
 # KSP Science Checklist
 
-![GitHub stars](https://img.shields.io/github/stars/Riki9811/ksp-science-checklist?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/Riki9811/ksp-science-checklist?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/Riki9811/ksp-science-checklist?style=for-the-badge)
+[![GitHub stars][stars-shield]][stars-url]
+[![GitHub contributors][contributors-shield]][contributors-url]
+[![Github issues][issues-shield]][issues-url]
+[![Github MIT License][license-shield]][license-url]
 
 </div>
 
@@ -93,3 +94,14 @@ The compiled `.exe` will be inside the `dist` folder.
 ### ⭐ Enjoying the Project?
 
 Feel free to **star** ⭐ this repo and contribute! 🚀
+
+<!-- LINKS -->
+
+[stars-shield]: https://img.shields.io/github/stars/Riki9811/ksp-science-checklist.svg?style=for-the-badge
+[stars-url]: https://github.com/Riki9811/ksp-science-checklist/stargazers
+[contributors-shield]: https://img.shields.io/github/contributors/Riki9811/ksp-science-checklist.svg?style=for-the-badge
+[contributors-url]: https://github.com/Riki9811/ksp-science-checklist/graphs/contributors
+[issues-shield]: https://img.shields.io/github/issues/Riki9811/ksp-science-checklist.svg?style=for-the-badge
+[issues-url]: https://github.com/Riki9811/ksp-science-checklist/issues
+[license-shield]: https://img.shields.io/github/license/Riki9811/ksp-science-checklist.svg?style=for-the-badge
+[license-url]: https://github.com/Riki9811/ksp-science-checklist/blob/master/LICENSE.txt

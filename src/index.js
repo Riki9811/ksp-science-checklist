@@ -6,8 +6,8 @@ import utils from "./utils/index.js";
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
-const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
+const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
+// const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
 
 //#region Window
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -18,6 +18,7 @@ if (startup) {
 function createWindow() {
 	// Create the browser window.
 	const newWindow = new BrowserWindow({
+		title: "KSP Science Checklist",
 		icon: join(app.getAppPath(), "assets", "icon.png"),
 		width: 1920,
 		height: 1080,
@@ -28,12 +29,22 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
+			devTools: false,
 			preload: join(app.getAppPath(), "src", "preload.js")
 		}
 	});
 
 	// Hide the menu
 	newWindow.setMenuBarVisibility(false);
+
+	// Update background color
+	updateBackgroundColor(newWindow);
+
+	// Add listeners to window events
+	newWindow.on("maximize", () => newWindow.webContents.send("window/onMaximize"));
+	newWindow.on("unmaximize", () => newWindow.webContents.send("window/onUnmaximize"));
+	newWindow.on("enter-full-screen", () => newWindow.webContents.send("window/onEnterFullScreen"));
+	newWindow.on("leave-full-screen", () => newWindow.webContents.send("window/onLeaveFullScreen"));
 
 	// and load the index.html of the app.
 	newWindow.loadFile(join(app.getAppPath(), "src", "index.html"));
@@ -62,18 +73,24 @@ if (!isSingleInstance) {
 	// Some APIs can only be used after this event occurs.
 	app.whenReady().then(() => {
 		appWindow = createWindow();
-		updateBackgroundColor();
 
-		appWindow.on("maximize", () => appWindow.webContents.send("window/onMaximize"));
-		appWindow.on("unmaximize", () => appWindow.webContents.send("window/onUnmaximize"));
-		appWindow.on("enter-full-screen", () => appWindow.webContents.send("window/onEnterFullScreen"));
-		appWindow.on("leave-full-screen", () => appWindow.webContents.send("window/onLeaveFullScreen"));
+		// Customize the About panel
+		app.setAboutPanelOptions({
+			applicationName: app.getName(),
+			applicationVersion: app.getVersion(),
+			copyright: "MIT License © 2025 Riccardo Mariotti",
+			version: "alpha",
+			credits: "Developed by Riccardo Mariotti\nInspired by the KSP community.",
+			authors: "Riccardo Mariotti",
+			website: "https://github.com/Riki9811/ksp-science-checklist",
+			iconPath: join(app.getAppPath(), "assets", "icon.png")
+		});
 
 		// On OS X it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
 		app.on("activate", () => {
 			if (BrowserWindow.getAllWindows().length === 0) {
-				createWindow();
+				appWindow = createWindow();
 			}
 		});
 	});
@@ -214,9 +231,9 @@ ipcMain.handle("dark-mode:is-dark", () => {
 	return nativeTheme.shouldUseDarkColors;
 });
 
-function updateBackgroundColor() {
+function updateBackgroundColor(window) {
 	const col = nativeTheme.shouldUseDarkColors ? "#282828" : "#ffffff";
-	appWindow?.setBackgroundColor(col);
+	window.setBackgroundColor(col);
 }
 //#endregion
 
