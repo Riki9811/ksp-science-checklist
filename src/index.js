@@ -3,15 +3,12 @@ import startup from "electron-squirrel-startup";
 import openAboutWindow from "about-window";
 import { basename, join } from "node:path";
 import utils from "./utils/index.js";
-import dotenv from "dotenv";
-
-dotenv.config();
+import "dotenv/config";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
-const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
+const KSP_INSTALL_DIR = process.env.KSP_PATH;
 
 //#region Window
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -281,7 +278,9 @@ ipcMain.handle("getJsonData", async () => {
 	const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
 	const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
 	const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
-	const deployedExperimentsResult = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
+	const deployedExperimentsResult = await utils.fileSystem.readFileContents(
+		join(dataPath, "deployedExperiments.json")
+	);
 
 	if (activitiesResult.code !== 0) {
 		appWindow.webContents.send("toasts/onBackendError", {

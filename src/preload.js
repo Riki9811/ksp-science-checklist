@@ -48,7 +48,7 @@ contextBridge.exposeInMainWorld("app", {
 	},
 
 	isMacOs: () => ipcRenderer.invoke("isMacOs"),
-	isMacOs: () => ipcRenderer.invoke("isLinux"),
+	isLinux: () => ipcRenderer.invoke("isLinux"),
 
 	showAboutPanel: () => ipcRenderer.send("showAboutPanel")
 });
