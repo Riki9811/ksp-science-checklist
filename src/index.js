@@ -219,13 +219,13 @@ ipcMain.handle("dark-mode:toggle", () => {
 		nativeTheme.themeSource = "dark";
 	}
 
-	updateBackgroundColor();
+	updateBackgroundColor(appWindow);
 	return nativeTheme.shouldUseDarkColors;
 });
 
 ipcMain.handle("dark-mode:reset", () => {
 	nativeTheme.themeSource = "system";
-	updateBackgroundColor();
+	updateBackgroundColor(appWindow);
 });
 
 ipcMain.handle("dark-mode:is-dark", () => {
