@@ -47,7 +47,10 @@ contextBridge.exposeInMainWorld("app", {
 		ipcRenderer.on("window/onLeaveFullScreen", callback);
 	},
 
-	isMacOs: () => ipcRenderer.invoke("isMacOs")
+	isMacOs: () => ipcRenderer.invoke("isMacOs"),
+	isMacOs: () => ipcRenderer.invoke("isLinux"),
+
+	showAboutPanel: () => ipcRenderer.send("showAboutPanel")
 });
 
 contextBridge.exposeInMainWorld("content", {

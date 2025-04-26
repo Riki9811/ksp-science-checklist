@@ -1,0 +1,19 @@
+@import url("global.css");
+
+body {
+	padding: 0 1rem;
+	width: auto;
+	background-color: var(--bgCol-alt);
+	user-select: text;
+}
+
+.logo,
+#app-icon {
+	width: 150px;
+	height: 150px;
+}
+
+.copyright,
+.versions {
+	color: var(--textCol-secondary);
+}

@@ -1,13 +1,17 @@
 import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import startup from "electron-squirrel-startup";
+import openAboutWindow from "about-window";
 import { basename, join } from "node:path";
 import utils from "./utils/index.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
-// const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
+// const KSP_INSTALL_DIR = "/Users/riccardomariotti/Documenti/Riccardo/KSP";
+const KSP_INSTALL_DIR = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program";
 
 //#region Window
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -20,8 +24,8 @@ function createWindow() {
 	const newWindow = new BrowserWindow({
 		title: "KSP Science Checklist",
 		icon: join(app.getAppPath(), "assets", "icon.png"),
-		width: 1920,
-		height: 1080,
+		width: 1280,
+		height: 720,
 		minWidth: 700,
 		minHeight: 500,
 		titleBarStyle: "hidden",
@@ -29,7 +33,7 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: false, // Improves security
 			contextIsolation: true,
-			devTools: false,
+			devTools: process.env.NODE_ENV === "development" ? true : false,
 			preload: join(app.getAppPath(), "src", "preload.js")
 		}
 	});
@@ -78,7 +82,7 @@ if (!isSingleInstance) {
 		app.setAboutPanelOptions({
 			applicationName: app.getName(),
 			applicationVersion: app.getVersion(),
-			copyright: "MIT License © 2025 Riccardo Mariotti",
+			copyright: "Distributed under MIT License",
 			version: "alpha",
 			credits: "Developed by Riccardo Mariotti\nInspired by the KSP community.",
 			authors: "Riccardo Mariotti",
@@ -246,6 +250,15 @@ ipcMain.handle("window/isMaximized", () => appWindow.isMaximized());
 ipcMain.handle("window/isFullScreen", () => appWindow.isFullScreen());
 
 ipcMain.handle("isMacOs", () => process.platform === "darwin");
+ipcMain.handle("isLinux", () => process.platform === "linux");
+
+ipcMain.on("showAboutPanel", () => {
+	const options = {
+		icon_path: join(app.getAppPath(), "assets", "icon.png"),
+		css_path: join(app.getAppPath(), "src", "styles", "about.css")
+	};
+	openAboutWindow.default(options);
+});
 //#endregion
 
 //#region Content
@@ -268,7 +281,7 @@ ipcMain.handle("getJsonData", async () => {
 	const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
 	const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
 	const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
-	const deployedExperiments = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
+	const deployedExperimentsResult = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
 
 	if (activitiesResult.code !== 0) {
 		appWindow.webContents.send("toasts/onBackendError", {
@@ -300,7 +313,7 @@ ipcMain.handle("getJsonData", async () => {
 			]
 		});
 	}
-	if (deployedExperiments.code !== 0) {
+	if (deployedExperimentsResult.code !== 0) {
 		appWindow.webContents.send("toasts/onBackendError", {
 			title: "App Data Error",
 			lines: [
@@ -316,7 +329,7 @@ ipcMain.handle("getJsonData", async () => {
 		activities: JSON.parse(activitiesResult.content),
 		celestialBodies: JSON.parse(celestialBodiesResult.content),
 		situations: JSON.parse(situationsResult.content),
-		deployedExperiments: JSON.parse(deployedExperiments.content)
+		deployedExperiments: JSON.parse(deployedExperimentsResult.content)
 	};
 });
 //#endregion
