@@ -85,6 +85,11 @@ async function updateContent() {
 	constructDeployablesTable(jsonData, bodyInfo);
 	constructROCScienceTable(bodyInfo);
 	constructCraftRecoveryTable(bodyInfo);
+	constructSamplesTables("asteroidSample", jsonData, bodyInfo);
+	constructSamplesTables("cometSample_short", jsonData, bodyInfo);
+	constructSamplesTables("cometSample_intermediate", jsonData, bodyInfo);
+	constructSamplesTables("cometSample_long", jsonData, bodyInfo);
+	constructSamplesTables("cometSample_interstellar", jsonData, bodyInfo);
 
 	// Restore list of all experiments (done because I remove used experiments to the show un-used to user)
 	scienceData.experiments = [...allExperiments];
@@ -100,6 +105,13 @@ function popExperimentById(id) {
 
 	const splicedData = scienceData.experiments.splice(index, 1);
 	return splicedData[0];
+}
+
+function filterSamplesByBody(sampleType, bodyName) {
+	if (!scienceData) return [];
+
+	const idStart = `${sampleType}@${bodyName}`;
+	return scienceData.experiments.filter((experiment) => experiment.id.startsWith(idStart));
 }
 
 function constructTableTitle(title, recordCount, totPoints) {
@@ -250,5 +262,92 @@ function constructROCScienceTable(bodyInfo) {
 
 	const newTable = new ScienceTable(mainContent, rowHeaders, columnHeaders, columns, true);
 	tables.push(newTable);
+}
+//#endregion
+
+//#region Asteroid/Comet Table
+function constructSamplesTables(sampleType, jsonData, bodyInfo) {
+	// Get all samples containing the bodyInfo.name
+	const samples = filterSamplesByBody(sampleType, bodyInfo.name);
+
+	if (!samples || samples.length === 0) return;
+
+	let title = "";
+	switch (sampleType) {
+		case "cometSample_short":
+			title = "Short Comet Samples";
+			break;
+		case "cometSample_intermediate":
+			title = "Intermediate Comet Samples";
+			break;
+		case "cometSample_long":
+			title = "Long Comet Samples";
+			break;
+		case "cometSample_interstellar":
+			title = "Interstellar Comet Samples";
+			break;
+		default:
+			title = "Asteroid Samples";
+			break;
+	}
+	const tableData = generateSamplesTableData(sampleType, samples, bodyInfo);
+
+	constructTableTitle(title, tableData.recordCount, tableData.totPoints);
+
+	const newTable = new ScienceTable(
+		mainContent,
+		tableData.rowHeaders.map((s) => formatSampleSituation(s, jsonData)),
+		tableData.columnHeaders,
+		tableData.columns,
+		true
+	);
+	tables.push(newTable);
+}
+
+function generateSamplesTableData(sampleType, samples, bodyInfo) {
+	let recordCount = 0;
+	let totPoints = 0;
+
+	const names = [
+		...new Set(
+			samples.map((sample) => {
+				const split = sample.id.split("_");
+				return split[split.length - 1];
+			})
+		)
+	];
+
+	const situations = [...new Set(samples.map((sample) => sample.id.split("@")[1].split("_")[0].substring(bodyInfo.name.length)))];
+
+	const columns = names.map((name) => {
+		return situations.map((situation) => {
+			const id = `${sampleType}@${bodyInfo.name}${situation}_${name}`;
+			const experiment = popExperimentById(id);
+			if (experiment && experiment.total > 0) {
+				recordCount++;
+				totPoints += experiment.collected;
+			}
+			return experiment;
+		});
+	});
+
+	return {
+		rowHeaders: situations,
+		columnHeaders: names,
+		columns,
+		recordCount,
+		totPoints
+	};
+}
+
+function formatSampleSituation(situationString, jsonData) {
+	for (const situation of jsonData.situations) {
+		const name = situation.name;
+		if (situationString.startsWith(name) && situationString.length > name.length) {
+			return formatCamelCase(`${name} / ${situationString.slice(name.length)}`);
+		}
+	}
+
+	return formatCamelCase(situationString);
 }
 //#endregion
