@@ -104,7 +104,7 @@ function extractExperiments(rAndDContent) {
 	if (!rAndDContent) return []; // Return an empty array if the input is null or undefined.
 
 	// Regular expression to match `Science` objects and capture `id`, `sci`, and `cap` values.
-	const regex = /Science\s*{\s*id\s*=\s*([^\s]+)[^}]*?\bsci\s*=\s*([^\s]+)[^}]*?\bcap\s*=\s*([^\s]+)/g;
+	const regex = /Science\s*{\s*id\s*=\s*([\S ]+)[^}]*?\bsci\s*=\s*([^\s]+)[^}]*?\bcap\s*=\s*([^\s]+)/g;
 
 	let matches;
 	const experiments = [];
