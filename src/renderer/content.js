@@ -90,6 +90,9 @@ async function updateContent() {
 	constructSamplesTables("cometSample_intermediate", jsonData, bodyInfo);
 	constructSamplesTables("cometSample_long", jsonData, bodyInfo);
 	constructSamplesTables("cometSample_interstellar", jsonData, bodyInfo);
+	constructSpecialBiomesTables(jsonData, bodyInfo);
+
+	listRemainingExperiments(bodyInfo);
 
 	// Restore list of all experiments (done because I remove used experiments to the show un-used to user)
 	scienceData.experiments = [...allExperiments];
@@ -290,21 +293,15 @@ function constructSamplesTables(sampleType, jsonData, bodyInfo) {
 			title = "Asteroid Samples";
 			break;
 	}
-	const tableData = generateSamplesTableData(sampleType, samples, bodyInfo);
+	const tableData = generateSamplesTableData(sampleType, samples, bodyInfo, jsonData);
 
 	constructTableTitle(title, tableData.recordCount, tableData.totPoints);
 
-	const newTable = new ScienceTable(
-		mainContent,
-		tableData.rowHeaders.map((s) => formatSampleSituation(s, jsonData)),
-		tableData.columnHeaders,
-		tableData.columns,
-		true
-	);
+	const newTable = new ScienceTable(mainContent, tableData.rowHeaders, tableData.columnHeaders, tableData.columns, true);
 	tables.push(newTable);
 }
 
-function generateSamplesTableData(sampleType, samples, bodyInfo) {
+function generateSamplesTableData(sampleType, samples, bodyInfo, jsonData) {
 	let recordCount = 0;
 	let totPoints = 0;
 
@@ -332,7 +329,7 @@ function generateSamplesTableData(sampleType, samples, bodyInfo) {
 	});
 
 	return {
-		rowHeaders: situations,
+		rowHeaders: situations.map((s) => formatSampleSituation(s, jsonData)),
 		columnHeaders: names,
 		columns,
 		recordCount,
@@ -349,5 +346,63 @@ function formatSampleSituation(situationString, jsonData) {
 	}
 
 	return formatCamelCase(situationString);
+}
+//#endregion
+
+//#region Special biomes Table
+function constructSpecialBiomesTables(jsonData, bodyInfo) {
+	if (!bodyInfo.specialBiomes || bodyInfo.specialBiomes.length === 0) return;
+
+	const landedSituation = jsonData.situations.filter((situation) => situation.name === "SrfLanded")[0];
+
+	const filteredActivities = jsonData.activities.filter((activity) => {
+		const isComet = activity.name.startsWith("comet");
+		const isAsteroid = activity.name.startsWith("asteroid");
+		const isBiomeSpecific = landedSituation.activityTypes[activity.name] === "biome";
+
+		return !isComet && !isAsteroid && isBiomeSpecific;
+	});
+
+	const tableData = generateSpecialBiomesTableData(filteredActivities, bodyInfo, landedSituation);
+
+	constructTableTitle(tableData.name, tableData.recordCount, tableData.totPoints);
+
+	const newTable = new ScienceTable(mainContent, tableData.biomes, tableData.activities, tableData.columns);
+	tables.push(newTable);
+}
+
+function generateSpecialBiomesTableData(activities, bodyInfo, situation) {
+	let recordCount = 0;
+	let totPoints = 0;
+
+	const columns = activities.map((activity) => {
+		if (activity.requiresAtmosphere && !bodyInfo.hasAtmosphere) return null;
+
+		return bodyInfo.specialBiomes.map((biomeName) => {
+			const experiment = popExperimentById(`${activity.name}@${bodyInfo.name}${situation.name}${biomeName}`);
+			if (experiment && experiment.total > 0) {
+				recordCount++;
+				totPoints += experiment.collected;
+			}
+			return experiment;
+		});
+	});
+
+	return {
+		name: formatCamelCase(situation.name) + " (Special Biomes)",
+		biomes: bodyInfo.specialBiomes.map(formatCamelCase),
+		activities: activities.map((activity) => formatCamelCase(activity.name)),
+		columns,
+		recordCount,
+		totPoints
+	};
+}
+//#endregion
+
+//#region Remaining Experiments
+function listRemainingExperiments(bodyInfo) {
+	const remainingExperiments = scienceData.experiments.filter((experiment) => experiment.id.includes(bodyInfo.name));
+
+	console.log(remainingExperiments);
 }
 //#endregion
