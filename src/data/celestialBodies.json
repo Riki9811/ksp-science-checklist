@@ -1,6 +1,7 @@
 [
 	{
-		"name": "Kerbol",
+		"name": "Sun",
+		"displayName": "Kerbol",
 		"isLandable": false,
 		"hasAtmosphere": true,
 		"hasWater": false,
@@ -11,6 +12,7 @@
 	},
 	{
 		"name": "Moho",
+		"displayName": "Moho",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -34,6 +36,7 @@
 	},
 	{
 		"name": "Eve",
+		"displayName": "Eve",
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
@@ -60,6 +63,7 @@
 	},
 	{
 		"name": "Gilly",
+		"displayName": "Gilly",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -70,6 +74,7 @@
 	},
 	{
 		"name": "Kerbin",
+		"displayName": "Kerbin",
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
@@ -120,6 +125,7 @@
 	},
 	{
 		"name": "Mun",
+		"displayName": "Mun",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -148,6 +154,7 @@
 	},
 	{
 		"name": "Minmus",
+		"displayName": "Minmus",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -158,6 +165,7 @@
 	},
 	{
 		"name": "Duna",
+		"displayName": "Duna",
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": false,
@@ -183,6 +191,7 @@
 	},
 	{
 		"name": "Ike",
+		"displayName": "Ike",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -202,6 +211,7 @@
 	},
 	{
 		"name": "Dres",
+		"displayName": "Dres",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -212,6 +222,7 @@
 	},
 	{
 		"name": "Jool",
+		"displayName": "Jool",
 		"isLandable": false,
 		"hasAtmosphere": true,
 		"hasWater": false,
@@ -222,6 +233,7 @@
 	},
 	{
 		"name": "Laythe",
+		"displayName": "Laythe",
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
@@ -232,6 +244,7 @@
 	},
 	{
 		"name": "Vall",
+		"displayName": "Vall",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -242,6 +255,7 @@
 	},
 	{
 		"name": "Tylo",
+		"displayName": "Tylo",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -252,6 +266,7 @@
 	},
 	{
 		"name": "Bop",
+		"displayName": "Bop",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -262,6 +277,7 @@
 	},
 	{
 		"name": "Pol",
+		"displayName": "Pol",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
@@ -272,6 +288,7 @@
 	},
 	{
 		"name": "Eeloo",
+		"displayName": "Eeloo",
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
