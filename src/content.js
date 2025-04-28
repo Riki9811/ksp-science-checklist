@@ -2,6 +2,8 @@ import { app, ipcMain } from "electron";
 import { join } from "node:path";
 import utils from "./utils/index.js";
 
+var jsonData = undefined;
+
 export function registerContentHandlers(window) {
 	// Handle tab selection and notify all renderer processes
 	ipcMain.on("onTabSelect", (_, selectedTab) => {
@@ -14,9 +16,10 @@ export function registerContentHandlers(window) {
 	});
 
 	ipcMain.handle("getJsonData", async () => {
+		if (jsonData) return jsonData;
+
 		const dataPath = join(app.getAppPath(), "src", "data");
 
-		// TODO: avoid reading the files each time. Needs rewriting in the future
 		const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
 		const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
 		const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
@@ -63,12 +66,14 @@ export function registerContentHandlers(window) {
 			});
 		}
 
-		// TODO: implement validation before returning (json has correct structure?)
-		return {
+		// TODO: implement validation (json has correct structure?)
+		jsonData = {
 			activities: JSON.parse(activitiesResult.content),
 			celestialBodies: JSON.parse(celestialBodiesResult.content),
 			situations: JSON.parse(situationsResult.content),
 			deployedExperiments: JSON.parse(deployedExperimentsResult.content)
 		};
+
+		return jsonData;
 	});
 }
