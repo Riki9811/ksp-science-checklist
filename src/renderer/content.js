@@ -1,4 +1,5 @@
 import PopupToast from "../components/PopupToast.js";
+import ScienceCell from "../components/ScienceCell.js";
 import ScienceTable from "../components/ScienceTable.js";
 
 const mainContent = document.getElementById("main-content");
@@ -6,6 +7,7 @@ const mainContent = document.getElementById("main-content");
 var scienceData = null;
 var selectedBody = "Kerbin";
 const tables = [];
+const remainingList = [];
 
 // Listen for content updates (triggered in sidebar.js and tablist.js)
 content.onUpdateContent((data) => {
@@ -48,6 +50,7 @@ async function updateContent() {
 	// Clear current content
 	mainContent.innerHTML = "";
 	tables.length = 0;
+	remainingList.length = 0;
 
 	// Save orignial list with all experiments (to restore it later)
 	const allExperiments = [...scienceData.experiments];
@@ -403,6 +406,30 @@ function generateSpecialBiomesTableData(activities, bodyInfo, situation) {
 function listRemainingExperiments(bodyInfo) {
 	const remainingExperiments = scienceData.experiments.filter((experiment) => experiment.id.includes(bodyInfo.name));
 
-	console.log(remainingExperiments);
+	if (remainingExperiments.length === 0) return;
+
+	let recordCount = remainingExperiments.length;
+	let totPoints = remainingExperiments.reduce((accumulator, experiment) => accumulator + experiment.collected, 0);
+
+	constructTableTitle("Remaining/Unhandled Experiments", recordCount, totPoints);
+
+	const container = document.createElement("div");
+	container.classList.add("remaining-experiment-container");
+
+	remainingExperiments.forEach((experiment) => {
+		const experimentId = document.createElement("p");
+		experimentId.textContent = experiment.id;
+		container.appendChild(experimentId);
+
+		const scienceCell = new ScienceCell(experiment.id, experiment.collected, experiment.total);
+		container.appendChild(scienceCell.element);
+
+		const spacer = document.createElement("div");
+		spacer.classList.add("remaining-experiments-spacer");
+		container.appendChild(spacer);
+	});
+
+	container.removeChild(container.lastChild);
+	mainContent.appendChild(container);
 }
 //#endregion

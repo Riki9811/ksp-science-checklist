@@ -35,3 +35,26 @@
 	font-size: 70%;
 	color: var(--textCol-secondary);
 }
+
+.remaining-experiment-container {
+	display: grid;
+	grid-template-columns: auto auto;
+	width: max-content;
+	align-items: center;
+	border: 0.22rem solid var(--borderCol-main);
+}
+
+.remaining-experiment-container .science-cell {
+	min-width: 5rem;
+}
+
+.remaining-experiments-spacer {
+	grid-column: span 2;
+	height: 0.13rem;
+	background-color: var(--borderCol-main);
+}
+
+.remaining-experiment-container > p {
+	font-weight: bold;
+	padding: 0 1rem 0 0.5rem;
+}
