@@ -425,7 +425,9 @@ function listRemainingExperiments(bodyInfo) {
 		experimentId.textContent = experiment.id;
 		container.appendChild(experimentId);
 
-		const _ = new ScienceCell(container, experiment.id, experiment.collected, experiment.total);
+		const cell = document.createElement("div");
+		new ScienceCell(cell, experiment.id, experiment.collected, experiment.total);
+		container.appendChild(cell);
 
 		const spacer = document.createElement("div");
 		spacer.classList.add("remaining-experiments-spacer");
