@@ -1,45 +1,16 @@
 export default class ScienceCell {
-	/**
-	 * @type {HTMLElement}
-	 * @private
-	 * @description The DOM element representing this science cell in the UI.
-	 */
-	#element;
-
-	/**
-	 * @type {string}
-	 * @private
-	 * @description The id of the science experiment.
-	 */
+	#container;
 	#id;
-
-	/**
-	 * @type {number}
-	 * @private
-	 * @description The amount of science points collected.
-	 */
 	#collected;
-
-	/**
-	 * @type {number}
-	 * @private
-	 * @description The total amount of science points available.
-	 */
 	#total;
 
-	/**
-	 * Creates an instance of ScienceCell.
-	 * @param {number} collected - The amount of science points collected.
-	 * @param {number} total - The total amount of science points available.
-	 */
-	constructor(id, collected, total) {
+	constructor(container, id, collected, total) {
+		this.#container = container;
 		this.#id = id;
 		this.#collected = collected.toFixed(1);
 		this.#total = total.toFixed(1);
 
-		this.#element = document.createElement("div");
-		this.#element.classList.add("science-cell");
-		this.#element.dataset.experiment = id;
+		this.#container.classList.add("science-cell");
 		this.#updateUI();
 	}
 
@@ -51,35 +22,27 @@ export default class ScienceCell {
 		const percentage = this.#total > 0 ? this.#collected / this.#total : 0;
 
 		// Set the percentage as a CSS variable
-		this.#element.style.setProperty("--percent", Math.round(percentage * 100));
+		this.#container.style.setProperty("--percent", Math.round(percentage * 100));
 
 		// Toggle full-cell class depending on total = collected
-		this.#element.classList.toggle("science-cell-full", this.#total === this.#collected);
+		this.#container.classList.toggle("science-cell-full", this.#total === this.#collected);
 		// Toggle empty-cell class depending on collected = 0
-		this.#element.classList.toggle("science-cell-empty", this.#collected === 0);
+		this.#container.classList.toggle("science-cell-empty", this.#collected === 0);
 
 		// Clear existing content
-		this.#element.innerHTML = "";
+		this.#container.innerHTML = "";
 
 		// Add it to data
-		this.#element.dataset.id = this.#id;
+		this.#container.dataset.id = this.#id;
 
 		// Add two <p> tags for collected and total points
 		const collectedP = document.createElement("p");
 		collectedP.textContent = `${this.#collected}`;
-		this.#element.appendChild(collectedP);
+		this.#container.appendChild(collectedP);
 
 		const totalP = document.createElement("p");
 		totalP.textContent = `/${this.#total}`;
-		this.#element.appendChild(totalP);
-	}
-
-	/**
-	 * Gets the main UI element for this cell.
-	 * @returns {HTMLElement} The DOM element representing this cell.
-	 */
-	get element() {
-		return this.#element;
+		this.#container.appendChild(totalP);
 	}
 
 	/**

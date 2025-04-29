@@ -103,7 +103,7 @@ export default class ScienceTable {
 		this.columnHeaders.forEach((_, colIndex) => {
 			const cellData = this.columns[colIndex];
 			if (cellData === null) {
-				this.#addEmptyCell();
+				this.#addEmptyColumn(rowIndex);
 			} else if (cellData.length === 1 && this.rowHeaders.length > 1) {
 				this.#addSpanningCell(cellData[0], rowIndex);
 			} else if (cellData.length === this.rowHeaders.length) {
@@ -113,12 +113,16 @@ export default class ScienceTable {
 	}
 
 	/**
-	 * Adds an empty cell to the grid.
+	 * Adds an empty column that spans all rows.
+	 * @param {number} rowIndex - The index of the current row.
 	 */
-	#addEmptyCell() {
-		const emptyCell = document.createElement("div");
-		emptyCell.classList.add("grid-cell", "empty-cell");
-		this.grid.appendChild(emptyCell);
+	#addEmptyColumn(rowIndex) {
+		if (rowIndex !== 0) return;
+
+		const emptyColumn = document.createElement("div");
+		emptyColumn.classList.add("grid-cell", "empty-column");
+		emptyColumn.style.gridRow = `span ${this.rowHeaders.length}`;
+		this.grid.appendChild(emptyColumn);
 	}
 
 	/**
@@ -127,21 +131,20 @@ export default class ScienceTable {
 	 * @param {number} rowIndex - The index of the current row.
 	 */
 	#addSpanningCell(spanningCellData, rowIndex) {
-		if (rowIndex === 0) {
-			const cellDiv = document.createElement("div");
-			cellDiv.classList.add("grid-cell");
+		if (rowIndex !== 0) return;
 
-			if (spanningCellData.total === 0) {
-				cellDiv.classList.add("grid-cell-uncollected");
-			} else {
-				const spanningCell = new ScienceCell(spanningCellData.id, spanningCellData.collected, spanningCellData.total);
-				this.scienceCells.push(spanningCell);
-				cellDiv.appendChild(spanningCell.element);
-			}
+		const cellDiv = document.createElement("div");
+		cellDiv.classList.add("grid-cell");
 
-			cellDiv.style.gridRow = `span ${this.rowHeaders.length}`;
-			this.grid.appendChild(cellDiv);
+		if (spanningCellData.total === 0) {
+			cellDiv.classList.add("grid-cell-uncollected");
+		} else {
+			const spanningCell = new ScienceCell(cellDiv, spanningCellData.id, spanningCellData.collected, spanningCellData.total);
+			this.scienceCells.push(spanningCell);
 		}
+
+		cellDiv.style.gridRow = `span ${this.rowHeaders.length}`;
+		this.grid.appendChild(cellDiv);
 	}
 
 	/**
@@ -156,14 +159,13 @@ export default class ScienceTable {
 			if (cellData.total === 0) {
 				cellDiv.classList.add("grid-cell-uncollected");
 			} else {
-				const scienceCell = new ScienceCell(cellData.id, cellData.collected, cellData.total);
+				const scienceCell = new ScienceCell(cellDiv, cellData.id, cellData.collected, cellData.total);
 				this.scienceCells.push(scienceCell);
-				cellDiv.appendChild(scienceCell.element);
 			}
 
 			this.grid.appendChild(cellDiv);
 		} else {
-			this.#addEmptyCell();
+			this.#addEmptyColumn();
 		}
 	}
 }
