@@ -68,7 +68,7 @@ if (!isSingleInstance) {
 		// Register all handlers
 		registerApiHandlers(appWindow);
 		registerContentHandlers(appWindow);
-		registerWindowHandlers(appWindow);
+		registerWindowHandlers(appWindow, true);
 		registerThemeHandlers();
 
 		// Customize the About panel
@@ -88,6 +88,9 @@ if (!isSingleInstance) {
 		app.on("activate", () => {
 			if (BrowserWindow.getAllWindows().length === 0) {
 				appWindow = createWindow();
+
+				// Re-register window handlers except golobal ones
+				registerWindowHandlers(appWindow, false);
 			}
 		});
 	});
