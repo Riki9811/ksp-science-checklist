@@ -1,6 +1,7 @@
 [
 	{
 		"name": "SrfLanded",
+		"displayName": "Landed",
 		"activityTypes": {
 			"asteroidSample": "biome",
 			"atmosphereAnalysis": "biome",
@@ -27,6 +28,7 @@
 	},
 	{
 		"name": "SrfSplashed",
+		"displayName": "Splashed",
 		"activityTypes": {
 			"asteroidSample": "biome",
 			"atmosphereAnalysis": null,
@@ -53,6 +55,7 @@
 	},
 	{
 		"name": "FlyingLow",
+		"displayName": "Flying Low",
 		"activityTypes": {
 			"asteroidSample": "biome",
 			"atmosphereAnalysis": "biome",
@@ -79,6 +82,7 @@
 	},
 	{
 		"name": "FlyingHigh",
+		"displayName": "Flying High",
 		"activityTypes": {
 			"asteroidSample": "global",
 			"atmosphereAnalysis": "biome",
@@ -105,6 +109,7 @@
 	},
 	{
 		"name": "InSpaceLow",
+		"displayName": "In Space Low",
 		"activityTypes": {
 			"asteroidSample": "global",
 			"atmosphereAnalysis": null,
@@ -131,6 +136,7 @@
 	},
 	{
 		"name": "InSpaceHigh",
+		"displayName": "In Space High",
 		"activityTypes": {
 			"asteroidSample": "global",
 			"atmosphereAnalysis": null,

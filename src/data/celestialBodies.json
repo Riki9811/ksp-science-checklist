@@ -6,7 +6,11 @@
 		"hasAtmosphere": true,
 		"hasWater": false,
 		"ROCScience": [],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy"],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-Orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" }
+		],
 		"biomes": [],
 		"specialBiomes": []
 	},
@@ -16,8 +20,16 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_MohoStone", "ROCScience_MohoWrinkleRidge"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_MohoStone", "displayName": "Moho Stone" },
+			{ "name": "ROCScience_MohoWrinkleRidge", "displayName": "Wrinkle Ridge" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": [
 			"NorthPole",
 			"NorthernSinkholeRidge",
@@ -40,8 +52,18 @@
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
-		"ROCScience": ["ROCScience_EveVolcanicRock", "ROCScience_EvePancakeDome", "ROCScience_EveBasaltFormation"],
-		"recovery": ["Flew", "SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_EveVolcanicRock", "displayName": "Volcanic Rock" },
+			{ "name": "ROCScience_EvePancakeDome", "displayName": "Pancake Dome" },
+			{ "name": "ROCScience_EveBasaltFormation", "displayName": "Basalt Formation" }
+		],
+		"recovery": [
+			{ "name": "Flew", "displayName": "Flight" },
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": [
 			"Poles",
 			"Lowlands",
@@ -67,8 +89,13 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_GillyRidgeline"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [{ "name": "ROCScience_GillyRidgeline", "displayName": "Gilly Ridgeline" }],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Lowlands", "Midlands", "Highlands"],
 		"specialBiomes": []
 	},
@@ -78,8 +105,11 @@
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
-		"ROCScience": ["ROCScience_KerbinGiantQuartz", "ROCScience_KerbinBaobabTree"],
-		"recovery": ["Flew", "SubOrbited", "Orbited"],
+		"ROCScience": [
+			{ "name": "ROCScience_KerbinGiantQuartz", "displayName": "Giant Quartz" },
+			{ "name": "ROCScience_KerbinBaobabTree", "displayName": "Baobab Tree" }
+		],
+		"recovery": [{ "name": "Flew", "displayName": "Flight" }, { "name": "SubOrbited", "displayName": "Sub-orbit" }, "Orbited"],
 		"biomes": ["IceCaps", "NorthernIceShelf", "SouthernIceShelf", "Tundra", "Highlands", "Mountains", "Grasslands", "Deserts", "Badlands", "Shores", "Water"],
 		"specialBiomes": [
 			"Baikerbanur",
@@ -129,8 +159,17 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_MunStone", "ROCScience_MunCrater", "ROCScience_MunLargeCrater"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_MunStone", "displayName": "Mun Stone" },
+			{ "name": "ROCScience_MunCrater", "displayName": "Mun Crater" },
+			{ "name": "ROCScience_MunLargeCrater", "displayName": "Mun Large Crater" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": [
 			"Poles",
 			"PolarLowlands",
@@ -158,8 +197,16 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_MinmusGreenSandstone", "ROCScience_MinmusOlivineFormation"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_MinmusGreenSandstone", "displayName": "Green Sandstone" },
+			{ "name": "ROCScience_MinmusOlivineFormation", "displayName": "Olivine Formation" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Lowlands", "Midlands", "Highlands", "Slopes", "Flats", "LesserFlats", "GreatFlats", "GreaterFlats"],
 		"specialBiomes": []
 	},
@@ -169,8 +216,19 @@
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_DunaBlueberries", "ROCScience_DunaStone", "ROCScience_DunaMeteorite", "ROCScience_DunaDune"],
-		"recovery": ["Flew", "SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_DunaBlueberries", "displayName": "Blueberries" },
+			{ "name": "ROCScience_DunaStone", "displayName": "Duna Stone" },
+			{ "name": "ROCScience_DunaMeteorite", "displayName": "Duna Meteorite" },
+			{ "name": "ROCScience_DunaDune", "displayName": "Duna Dune" }
+		],
+		"recovery": [
+			{ "name": "Flew", "displayName": "Flight" },
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": [
 			"Poles",
 			"PolarHighlands",
@@ -195,8 +253,13 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_DunaEjectaOnIke"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [{ "name": "ROCScience_DunaEjectaOnIke", "displayName": "Duna Ejecta" }],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": [
 			"PolarLowlands",
 			"Midlands",
@@ -215,8 +278,16 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_DresMeteorite", "ROCScience_DresCrater"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_DresMeteorite", "displayName": "Dres Meteorite" },
+			{ "name": "ROCScience_DresCrater", "displayName": "Dres Crater" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Highlands", "Midlands", "Ridges", "Lowlands", "ImpactCraters", "ImpactEjecta", "Canyons"],
 		"specialBiomes": []
 	},
@@ -227,7 +298,12 @@
 		"hasAtmosphere": true,
 		"hasWater": false,
 		"ROCScience": [],
-		"recovery": ["Flew", "SubOrbited", "Orbited", "FlewBy"],
+		"recovery": [
+			{ "name": "Flew", "displayName": "Flight" },
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" }
+		],
 		"biomes": [],
 		"specialBiomes": []
 	},
@@ -237,8 +313,18 @@
 		"isLandable": true,
 		"hasAtmosphere": true,
 		"hasWater": true,
-		"ROCScience": ["ROCScience_LaytheStone", "ROCScience_LaytheGeyser", "ROCScience_LaytheBoulder"],
-		"recovery": ["Flew", "SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_LaytheStone", "displayName": "Laythe Stone" },
+			{ "name": "ROCScience_LaytheGeyser", "displayName": "Laythe Geyser" },
+			{ "name": "ROCScience_LaytheBoulder", "displayName": "Laythe Boulder" }
+		],
+		"recovery": [
+			{ "name": "Flew", "displayName": "Flight" },
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Shores", "Dunes", "CrescentBay", "TheSagenSea", "CraterIsland", "Shallows", "CraterBay", "DegrasseSea", "Peaks"],
 		"specialBiomes": []
 	},
@@ -248,8 +334,17 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_VallIceChunk", "ROCScience_VallStone", "ROCScience_VallCryovolcano"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_VallIceChunk", "displayName": "Vall Ice Chunk" },
+			{ "name": "ROCScience_VallStone", "displayName": "Vall Stone" },
+			{ "name": "ROCScience_VallCryovolcano", "displayName": "Cryovolcano" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Highlands", "Midlands", "Lowlands", "Mountains", "NortheastBasin", "NorthwestBasin", "SouthernBasin", "SouthernValleys"],
 		"specialBiomes": []
 	},
@@ -259,8 +354,17 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_TyloLightStone", "ROCScience_TyloDarkBoulder", "ROCScience_TyloCheckerboard"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_TyloLightStone", "displayName": "Tylo Light Stone" },
+			{ "name": "ROCScience_TyloDarkBoulder", "displayName": "Tylo Dark Boulder" },
+			{ "name": "ROCScience_TyloCheckerboard", "displayName": "Tylo Checkerboard" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Highlands", "Midlands", "Lowlands", "Mara", "MinorCraters", "GagarinCrater", "GrissomCrater", "GalileioCrater", "TychoCrater"],
 		"specialBiomes": []
 	},
@@ -270,8 +374,13 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_BopGravelPile"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [{ "name": "ROCScience_BopGravelPile", "displayName": "Gravel Pile" }],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Slopes", "Peaks", "Valley", "Ridges"],
 		"specialBiomes": []
 	},
@@ -281,8 +390,13 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_PolYellowStones"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [{ "name": "ROCScience_PolYellowStones", "displayName": "Yellow Stones" }],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "Lowlands", "Midlands", "Highlands"],
 		"specialBiomes": []
 	},
@@ -292,8 +406,17 @@
 		"isLandable": true,
 		"hasAtmosphere": false,
 		"hasWater": false,
-		"ROCScience": ["ROCScience_EelooIceChunk", "ROCScience_EelooBrownBoulder", "ROCScience_EelooBerg"],
-		"recovery": ["SubOrbited", "Orbited", "FlewBy", "Surfaced"],
+		"ROCScience": [
+			{ "name": "ROCScience_EelooIceChunk", "displayName": "Eeloo Ice Chunk" },
+			{ "name": "ROCScience_EelooBrownBoulder", "displayName": "Eeloo Brown Boulder" },
+			{ "name": "ROCScience_EelooBerg", "displayName": "Eeloo Berg" }
+		],
+		"recovery": [
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" },
+			{ "name": "FlewBy", "displayName": "Fly-by" },
+			{ "name": "Surfaced", "displayName": "Landed" }
+		],
 		"biomes": ["Poles", "NorthernGlaciers", "Midlands", "Lowlands", "IceCanyons", "Highlands", "Craters", "Fragipan", "BabbagePatch", "SouthernGlaciers", "MuGlacier"]
 	}
 ]

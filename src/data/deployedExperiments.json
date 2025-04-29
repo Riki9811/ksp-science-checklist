@@ -1,6 +1,6 @@
 [
-	{ "name": "deployedGooObservation", "requiresAtmosphere": false, "requiresVacuum": false },
-	{ "name": "deployedIONCollector", "requiresAtmosphere": false, "requiresVacuum": true },
-	{ "name": "deployedSeismicSensor", "requiresAtmosphere": false, "requiresVacuum": false },
-	{ "name": "deployedWeatherReport", "requiresAtmosphere": true, "requiresVacuum": false }
+	{ "name": "deployedGooObservation", "displayName": "Goo Observation", "requiresAtmosphere": false, "requiresVacuum": false },
+	{ "name": "deployedIONCollector", "displayName": "ION Collector", "requiresAtmosphere": false, "requiresVacuum": true },
+	{ "name": "deployedSeismicSensor", "displayName": "Seismic Sensor", "requiresAtmosphere": false, "requiresVacuum": false },
+	{ "name": "deployedWeatherReport", "displayName": "Weather Report", "requiresAtmosphere": true, "requiresVacuum": false }
 ]

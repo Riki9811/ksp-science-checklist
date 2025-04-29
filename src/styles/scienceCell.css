@@ -73,6 +73,10 @@
 	}
 } */
 
+.science-cell > p {
+	line-height: 1rem;
+}
+
 .science-cell > p:last-child {
 	font-size: 70%;
 }

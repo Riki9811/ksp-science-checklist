@@ -144,13 +144,16 @@ function constructSituationTables(jsonData, bodyInfo) {
 	// Ignore asteroid and comet samples
 	const filteredActivities = jsonData.activities.filter((activity) => !activity.name.startsWith("comet") && !activity.name.startsWith("asteroid"));
 
+	// List of all biome names formatted
+	const biomes = bodyInfo.biomes.length > 0 ? bodyInfo.biomes.map(formatCamelCase) : [`${bodyInfo.displayName} (global)`];
+
 	// Construct the table data for each situation
 	const tablesData = jsonData.situations.map((situation) => generateSituationTableData(filteredActivities, bodyInfo, situation));
 
 	for (const tableData of tablesData) {
 		constructTableTitle(tableData.name, tableData.recordCount, tableData.totPoints);
 
-		const newTable = new ScienceTable(mainContent, tableData.biomes, tableData.activities, tableData.columns);
+		const newTable = new ScienceTable(mainContent, biomes, tableData.activities, tableData.columns);
 		tables.push(newTable);
 	}
 }
@@ -185,9 +188,8 @@ function generateSituationTableData(activities, bodyInfo, situation) {
 	});
 
 	return {
-		name: formatCamelCase(situation.name),
-		biomes: bodyInfo.biomes.length > 0 ? bodyInfo.biomes.map(formatCamelCase) : [`${bodyInfo.name} (global)`],
-		activities: activities.map((activity) => formatCamelCase(activity.name)),
+		name: situation.displayName,
+		activities: activities.map((activity) => activity.displayName),
 		columns,
 		recordCount,
 		totPoints
@@ -201,7 +203,7 @@ function constructCraftRecoveryTable(bodyInfo) {
 	let totPoints = 0;
 
 	const rowHeaders = [bodyInfo.name];
-	const columnHeaders = bodyInfo.recovery.map(formatCamelCase);
+	const columnHeaders = bodyInfo.recovery.map((recovery) => recovery.displayName);
 
 	const columns = bodyInfo.recovery.map((recovery) => {
 		const experiment = popExperimentById(`recovery@${bodyInfo.name}${recovery}`);
@@ -227,7 +229,7 @@ function constructDeployablesTable(jsonData, bodyInfo) {
 	let totPoints = 0;
 
 	const rowHeaders = [`${bodyInfo.name} surface`];
-	const columnHeaders = jsonData.deployedExperiments.map((deployable) => formatCamelCase(deployable.name.replace("deployed", "")));
+	const columnHeaders = jsonData.deployedExperiments.map((deployable) => deployable.displayName);
 
 	const columns = jsonData.deployedExperiments.map((deployable) => {
 		const experiment = popExperimentById(`${deployable.name}@${bodyInfo.name}SrfLanded`);
@@ -253,7 +255,7 @@ function constructROCScienceTable(bodyInfo) {
 	let totPoints = 0;
 
 	const rowHeaders = ["Scan/Analysis"];
-	const columnHeaders = bodyInfo.ROCScience.map((ROCScience) => formatCamelCase(ROCScience.replace("ROCScience_", "")));
+	const columnHeaders = bodyInfo.ROCScience.map((ROCScience) => ROCScience.displayName);
 
 	const columns = bodyInfo.ROCScience.map((ROCScience) => {
 		const experiment = popExperimentById(`${ROCScience}@${bodyInfo.name}SrfLanded`);
@@ -344,7 +346,7 @@ function formatSampleSituation(situationString, jsonData) {
 	for (const situation of jsonData.situations) {
 		const name = situation.name;
 		if (situationString.startsWith(name) && situationString.length > name.length) {
-			return formatCamelCase(`${name} / ${situationString.slice(name.length)}`);
+			return `${situation.displayName} / ${formatCamelCase(situationString.slice(name.length))}`;
 		}
 	}
 
@@ -358,6 +360,9 @@ function constructSpecialBiomesTables(jsonData, bodyInfo) {
 
 	const landedSituation = jsonData.situations.filter((situation) => situation.name === "SrfLanded")[0];
 
+	// List of all special biome names formatted
+	const biomes = bodyInfo.specialBiomes.map(formatCamelCase);
+
 	const filteredActivities = jsonData.activities.filter((activity) => {
 		const isComet = activity.name.startsWith("comet");
 		const isAsteroid = activity.name.startsWith("asteroid");
@@ -370,7 +375,7 @@ function constructSpecialBiomesTables(jsonData, bodyInfo) {
 
 	constructTableTitle(tableData.name, tableData.recordCount, tableData.totPoints);
 
-	const newTable = new ScienceTable(mainContent, tableData.biomes, tableData.activities, tableData.columns);
+	const newTable = new ScienceTable(mainContent, biomes, tableData.activities, tableData.columns);
 	tables.push(newTable);
 }
 
@@ -392,9 +397,8 @@ function generateSpecialBiomesTableData(activities, bodyInfo, situation) {
 	});
 
 	return {
-		name: formatCamelCase(situation.name) + " (Special Biomes)",
-		biomes: bodyInfo.specialBiomes.map(formatCamelCase),
-		activities: activities.map((activity) => formatCamelCase(activity.name)),
+		name: situation.displayName + " (Special Biomes)",
+		activities: activities.map((activity) => activity.displayName),
 		columns,
 		recordCount,
 		totPoints
@@ -421,8 +425,7 @@ function listRemainingExperiments(bodyInfo) {
 		experimentId.textContent = experiment.id;
 		container.appendChild(experimentId);
 
-		const scienceCell = new ScienceCell(experiment.id, experiment.collected, experiment.total);
-		container.appendChild(scienceCell.element);
+		const _ = new ScienceCell(container, experiment.id, experiment.collected, experiment.total);
 
 		const spacer = document.createElement("div");
 		spacer.classList.add("remaining-experiments-spacer");
