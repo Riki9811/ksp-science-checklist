@@ -109,7 +109,11 @@
 			{ "name": "ROCScience_KerbinGiantQuartz", "displayName": "Giant Quartz" },
 			{ "name": "ROCScience_KerbinBaobabTree", "displayName": "Baobab Tree" }
 		],
-		"recovery": [{ "name": "Flew", "displayName": "Flight" }, { "name": "SubOrbited", "displayName": "Sub-orbit" }, "Orbited"],
+		"recovery": [
+			{ "name": "Flew", "displayName": "Flight" },
+			{ "name": "SubOrbited", "displayName": "Sub-orbit" },
+			{ "name": "Orbited", "displayName": "Orbit" }
+		],
 		"biomes": ["IceCaps", "NorthernIceShelf", "SouthernIceShelf", "Tundra", "Highlands", "Mountains", "Grasslands", "Deserts", "Badlands", "Shores", "Water"],
 		"specialBiomes": [
 			"Baikerbanur",

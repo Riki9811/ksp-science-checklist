@@ -206,7 +206,7 @@ function constructCraftRecoveryTable(bodyInfo) {
 	const columnHeaders = bodyInfo.recovery.map((recovery) => recovery.displayName);
 
 	const columns = bodyInfo.recovery.map((recovery) => {
-		const experiment = popExperimentById(`recovery@${bodyInfo.name}${recovery}`);
+		const experiment = popExperimentById(`recovery@${bodyInfo.name}${recovery.name}`);
 		if (experiment && experiment.total > 0) {
 			recordCount++;
 			totPoints += experiment.collected;
@@ -258,7 +258,7 @@ function constructROCScienceTable(bodyInfo) {
 	const columnHeaders = bodyInfo.ROCScience.map((ROCScience) => ROCScience.displayName);
 
 	const columns = bodyInfo.ROCScience.map((ROCScience) => {
-		const experiment = popExperimentById(`${ROCScience}@${bodyInfo.name}SrfLanded`);
+		const experiment = popExperimentById(`${ROCScience.name}@${bodyInfo.name}SrfLanded`);
 		if (experiment && experiment.total > 0) {
 			recordCount++;
 			totPoints += experiment.collected;
