@@ -1,7 +1,10 @@
 import { app, ipcMain } from "electron";
 import { join } from "node:path";
 import utils from "./utils/index.js";
+import Schemas from "./data/schemas.js";
+import Ajv from "ajv";
 
+const ajv = new Ajv();
 var jsonData = undefined;
 
 export function registerContentHandlers(window) {
@@ -20,60 +23,58 @@ export function registerContentHandlers(window) {
 
 		const dataPath = join(app.getAppPath(), "src", "data");
 
-		const activitiesResult = await utils.fileSystem.readFileContents(join(dataPath, "activities.json"));
-		const celestialBodiesResult = await utils.fileSystem.readFileContents(join(dataPath, "celestialBodies.json"));
-		const situationsResult = await utils.fileSystem.readFileContents(join(dataPath, "situations.json"));
-		const deployedExperimentsResult = await utils.fileSystem.readFileContents(join(dataPath, "deployedExperiments.json"));
+		const activities = await readJsonData(dataPath, "activities.json", Schemas.ACTIVITIES, window);
+		const celestialBodies = await readJsonData(dataPath, "celestialBodies.json", Schemas.CELESTIAL_BODIES, window);
+		const situations = await readJsonData(dataPath, "situations.json", Schemas.SITUATIONS, window);
+		const deployedExperiments = await readJsonData(dataPath, "deployedExperiments.json", Schemas.DEPLOYED_EXP, window);
 
-		if (activitiesResult.code !== 0) {
-			window.webContents.send("toasts/onBackendError", {
-				title: "App Data Error",
-				lines: [
-					{ text: "Could not load: ", inLine: true },
-					{ text: "activities.json", secondary: true, italic: true },
-					{ text: "File either missing or not accessible" }
-				]
-			});
-		}
-		if (celestialBodiesResult.code !== 0) {
-			window.webContents.send("toasts/onBackendError", {
-				title: "App Data Error",
-				lines: [
-					{ text: "Could not load: ", inLine: true },
-					{ text: "celestialBodies.json", secondary: true, italic: true },
-					{ text: "File either missing or not accessible" }
-				]
-			});
-		}
-		if (situationsResult.code !== 0) {
-			window.webContents.send("toasts/onBackendError", {
-				title: "App Data Error",
-				lines: [
-					{ text: "Could not load: ", inLine: true },
-					{ text: "situations.json", secondary: true, italic: true },
-					{ text: "File either missing or not accessible" }
-				]
-			});
-		}
-		if (deployedExperimentsResult.code !== 0) {
-			window.webContents.send("toasts/onBackendError", {
-				title: "App Data Error",
-				lines: [
-					{ text: "Could not load: ", inLine: true },
-					{ text: "deployedExperiments.json", secondary: true, italic: true },
-					{ text: "File either missing or not accessible" }
-				]
-			});
-		}
-
-		// TODO: implement validation (json has correct structure?)
 		jsonData = {
-			activities: JSON.parse(activitiesResult.content),
-			celestialBodies: JSON.parse(celestialBodiesResult.content),
-			situations: JSON.parse(situationsResult.content),
-			deployedExperiments: JSON.parse(deployedExperimentsResult.content)
+			activities,
+			celestialBodies,
+			situations,
+			deployedExperiments
 		};
 
 		return jsonData;
 	});
 }
+
+//#region HELPER FUNCTIONS
+async function readJsonData(dataPath, fileName, schema, window) {
+	const result = await utils.fileSystem.readFileContents(join(dataPath, fileName));
+
+	if (result.code !== 0) {
+		window.webContents.send("toasts/onBackendError", {
+			title: "App Data Error",
+			lines: [{ text: "Could not load: ", inLine: true }, { text: fileName, secondary: true, italic: true }, { text: "File either missing or not accessible" }]
+		});
+		return [];
+	}
+
+	const data = JSON.parse(result.content);
+	const isValid = validateJsonResult(schema, data, fileName, window);
+
+	return isValid ? data : [];
+}
+
+function validateJsonResult(schema, data, fileName, window) {
+	const validate = ajv.compile(schema);
+
+	if (!validate(data)) {
+		window.webContents.send("toasts/onBackendWarning", {
+			title: "Malformed JSON Data",
+			lines: [
+				{ text: "Invalid structure in: ", inLine: true },
+				{ text: fileName, secondary: true, italic: true },
+				...validate.errors.map((err) => {
+					return { text: err.message, indented: true };
+				}),
+				{ text: "Data ignored due to validation failure." }
+			]
+		});
+		return false;
+	}
+
+	return true;
+}
+//#endregion
