@@ -1,14 +1,18 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import { registerApiHandlers } from "./api.js";
 import { registerContentHandlers } from "./content.js";
 import { registerThemeHandlers } from "./theme.js";
 import { registerWindowHandlers } from "./window.js";
 import startup from "electron-squirrel-startup";
+import Menu_Template from "./menu.js";
 import { join } from "node:path";
 import "dotenv/config";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
+
+const menu = Menu.buildFromTemplate(Menu_Template);
+Menu.setApplicationMenu(menu);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (startup) {
