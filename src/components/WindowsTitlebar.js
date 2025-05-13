@@ -1,3 +1,5 @@
+import TablistButton from "./TablistButton.js";
+
 export default class WindowsTitlebar {
 	#parent;
 	#leftContainer;
@@ -8,13 +10,13 @@ export default class WindowsTitlebar {
 	#unmaximizeButton;
 	#closeButton;
 
-	constructor(parent) {
+	constructor(parent, template) {
 		this.#parent = parent;
 
 		// Create left container
 		this.#leftContainer = document.createElement("div");
 		this.#leftContainer.classList.add("titlebar-left");
-		this.#constructTabMenu(this.#leftContainer);
+		this.#constructTabMenu(this.#leftContainer, template);
 		parent.appendChild(this.#leftContainer);
 
 		// Create right container
@@ -32,41 +34,15 @@ export default class WindowsTitlebar {
 		app.onLeaveFullScreen(() => this.#onLeaveFullScreen());
 	}
 
-	#constructTabMenu(parent) {
+	#constructTabMenu(parent, template) {
 		const menuImage = document.createElement("img");
 		menuImage.src = "../assets/icon.png";
 		menuImage.alt = "Icon";
 		parent.appendChild(menuImage);
 
-		const fileBtn = document.createElement("button");
-		fileBtn.id = "load-button";
-		fileBtn.innerText = "File";
-		fileBtn.type = "button";
-		parent.appendChild(fileBtn);
-
-		const settingsBtn = document.createElement("button");
-		settingsBtn.id = "settings-button";
-		settingsBtn.innerText = "Settings";
-		settingsBtn.type = "button";
-		parent.appendChild(settingsBtn);
-
-		const importBtn = document.createElement("button");
-		importBtn.id = "import-button";
-		importBtn.innerText = "Import";
-		importBtn.type = "button";
-		parent.appendChild(importBtn);
-
-		const themesBtn = document.createElement("button");
-		themesBtn.id = "window-button";
-		themesBtn.innerText = "Themes";
-		themesBtn.type = "button";
-		parent.appendChild(themesBtn);
-
-		const helpBtn = document.createElement("button");
-		helpBtn.id = "help-button";
-		helpBtn.innerText = "Help";
-		helpBtn.type = "button";
-		parent.appendChild(helpBtn);
+		template.forEach((menuItem) => {
+			new TablistButton(parent, menuItem.label, menuItem.submenu);
+		});
 	}
 
 	#constructWindowButtons(parent) {

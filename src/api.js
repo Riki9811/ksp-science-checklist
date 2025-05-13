@@ -2,6 +2,7 @@ import { ipcMain } from "electron";
 import { basename } from "node:path";
 import utils from "./utils/index.js";
 import { getExploreFolderErrors, getRawFolderErrors } from "../errors.js";
+import menu from "./menu.js";
 
 const KSP_INSTALL_DIR = process.env.KSP_PATH;
 
@@ -58,5 +59,9 @@ export function registerApiHandlers(window) {
 		};
 
 		return exploredFolder;
+	});
+
+	ipcMain.handle("getWindowsMenu", () => {
+		return menu.convertToWindows(menu.default);
 	});
 }

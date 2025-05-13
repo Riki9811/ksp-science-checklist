@@ -4,14 +4,14 @@ import { registerContentHandlers } from "./content.js";
 import { registerThemeHandlers } from "./theme.js";
 import { registerWindowHandlers } from "./window.js";
 import startup from "electron-squirrel-startup";
-import Menu_Template from "./menu.js";
+import MenuTemplate from "./menu.js";
 import { join } from "node:path";
 import "dotenv/config";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-const menu = Menu.buildFromTemplate(Menu_Template);
+const menu = Menu.buildFromTemplate(MenuTemplate.default);
 Menu.setApplicationMenu(menu);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -28,7 +28,7 @@ function createWindow() {
 		height: 720,
 		minWidth: 700,
 		minHeight: 500,
-		titleBarStyle: "hidden",
+		// titleBarStyle: "hidden",
 		trafficLightPosition: { x: 13, y: 13 },
 		webPreferences: {
 			nodeIntegration: false, // Improves security
@@ -39,7 +39,7 @@ function createWindow() {
 	});
 
 	// Hide the menu
-	newWindow.setMenuBarVisibility(false);
+	// newWindow.setMenuBarVisibility(false);
 
 	// Load the index.html of the app.
 	newWindow.loadFile(join(app.getAppPath(), "src", "index.html"));

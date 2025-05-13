@@ -1,0 +1,33 @@
+.tab-list-button {
+	cursor: pointer;
+}
+
+.tab-list-container {
+	display: none;
+	position: absolute;
+	background-color: var(--bgCol-toast);
+	box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
+	border-radius: 0.5rem;
+	z-index: 1000;
+}
+
+.tab-list-option {
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.tab-list-option:hover {
+	background-color: var(--bgCol-hover);
+}
+
+.tab-list-option:first-child {
+	border-top-right-radius: 0.5rem;
+	border-top-left-radius: 0.5rem;
+}
+
+.tab-list-option:last-child {
+	border-bottom-right-radius: 0.5rem;
+	border-bottom-left-radius: 0.5rem;
+}

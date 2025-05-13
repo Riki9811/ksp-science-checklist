@@ -4,13 +4,14 @@ import MacOsTitlebar from "../components/MacOsTitlebar.js";
 const titleBarRoot = document.getElementById("titlebar");
 
 async function load() {
-	let titleBar;
 	const isMacOs = await app.isMacOs();
 
 	if (!isMacOs) {
-		titleBar = new WindowsTitlebar(titleBarRoot);
+		const menuTemplate = await api.getWindowsMenu();
+
+		new WindowsTitlebar(titleBarRoot, menuTemplate);
 	} else {
-		titleBar = new MacOsTitlebar(titleBarRoot);
+		new MacOsTitlebar(titleBarRoot);
 	}
 }
 

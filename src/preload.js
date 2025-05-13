@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld("api", {
 	getRawFolders: () => ipcRenderer.invoke("getRawFolders"),
 	exploreFolder: (folderPath) => ipcRenderer.invoke("exploreFolder", folderPath),
 	getJsonData: () => ipcRenderer.invoke("getJsonData"),
+	getWindowsMenu: () => ipcRenderer.invoke("getWindowsMenu"),
 
 	onBackendInfo: (callback) => {
 		ipcRenderer.on("toasts/onBackendInfo", (_, data) => callback(data));
