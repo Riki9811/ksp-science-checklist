@@ -62,6 +62,8 @@ const Menu_Template = [
 						{ type: "separator" }
 				  ]
 				: []),
+			{ label: "Toggle Sidebar", accelerator: "CommandOrControl+b", click: toggleSidebar },
+			{ type: "separator" },
 			{ role: "resetZoom" },
 			{ role: "zoomIn" },
 			{ role: "zoomOut" },
@@ -109,6 +111,10 @@ function convertMenuItem(menu_item) {
 	const label = menu_item.role ?? menu_item.label;
 	const accelerator = menu_item.accelerator;
 	return hasSubmenu ? { label, accelerator, submenu: menu_item.submenu.map(convertMenuItem) } : { label, accelerator };
+}
+
+function toggleSidebar(menuItem, window, event) {
+	window.webContents.send("view/onToggleSidebar");
 }
 
 export default { default: Menu_Template, convertToWindows };

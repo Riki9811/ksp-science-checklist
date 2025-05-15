@@ -51,7 +51,11 @@ contextBridge.exposeInMainWorld("app", {
 	isMacOs: () => ipcRenderer.invoke("isMacOs"),
 	isLinux: () => ipcRenderer.invoke("isLinux"),
 
-	showAboutPanel: () => ipcRenderer.send("showAboutPanel")
+	showAboutPanel: () => ipcRenderer.send("showAboutPanel"),
+
+	onToggleSidebar: (callback) => {
+		ipcRenderer.on("view/onToggleSidebar", callback);
+	}
 });
 
 contextBridge.exposeInMainWorld("content", {

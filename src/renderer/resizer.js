@@ -10,14 +10,10 @@ let maxWidth = 500;
 resizer.addEventListener("mousedown", startDrag);
 
 function startDrag(evt) {
-	// Get the css variable --sidebar-width
-	const style = window.getComputedStyle(document.body);
-	const cssVar = style.getPropertyValue("--sidebar-width");
-
 	// Define starting variables
 	dragging = true;
 	startX = evt.clientX;
-	startWidth = parseInt(cssVar.replace("px", ""));
+	startWidth = getSidebarWidth();
 	maxWidth = Math.floor((window.innerWidth / 3) * 2);
 
 	// Listen to mouse movement and end of drag
@@ -62,9 +58,37 @@ function resizeByMouse(evt) {
 		newWidth = maxWidth;
 	}
 	// Apply new size
-	document.body.style.setProperty("--sidebar-width", newWidth + "px");
+	setSidebarWidth(newWidth);
 
 	// Correctly style the cursor
 	document.body.style.cursor = neededCursor;
 	resizer.style.cursor = neededCursor == "col-resize" ? "" : neededCursor;
+}
+
+function getSidebarWidth() {
+	// Get the css variable --sidebar-width
+	const style = window.getComputedStyle(document.body);
+	const cssVar = style.getPropertyValue("--sidebar-width");
+
+	return parseInt(cssVar.replace("px", ""));
+}
+
+function setSidebarWidth(width) {
+	document.body.style.setProperty("--sidebar-width", width + "px");
+}
+
+// Register sidebar toggle
+app.onToggleSidebar(() => toggle());
+
+function toggle() {
+	if (sidebar.classList.contains("closed")) {
+		resizer.style.width = "";
+		setSidebarWidth(startWidth);
+	} else {
+		resizer.style.width = "0px";
+		startWidth = getSidebarWidth();
+		setSidebarWidth(0);
+	}
+
+	sidebar.classList.toggle("closed");
 }
