@@ -23,6 +23,8 @@
 		--scrollbarCol: #383e4a99;
 		--scrollbarCol-hover: #383e4acc;
 		--scrollbarCol-active: #383e4a;
+
+		--resizerCol-hover: #1d4976;
 	}
 }
 
@@ -45,6 +47,8 @@
 		--scrollbarCol: #ffffff4d;
 		--scrollbarCol-hover: #ffffff66;
 		--scrollbarCol-active: #ffffff80;
+
+		--resizerCol-hover: #4f9fdf;
 	}
 }
 
@@ -139,5 +143,5 @@ button:hover {
 }
 
 #resizer:hover {
-	background-color: var(--bgCol-highlight);
+	background-color: var(--resizerCol-hover);
 }
