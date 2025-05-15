@@ -4,6 +4,7 @@ import "./sidebar.js";
 import "./tablist.js";
 import "./themeButton.js";
 import "./titlebar.js";
+import "./resizer.js";
 
 // Register toast events to make them callable from the node back-end
 api.onBackendInfo((data) => PopupToast.showInfo(data.title, data.lines, data.timeout));

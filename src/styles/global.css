@@ -79,8 +79,8 @@ button:hover {
 #app {
 	display: grid;
 	grid-template:
-		"titlebar titlebar" min-content
-		"sidebar content" auto / var(--sidebar-width) auto;
+		"titlebar titlebar titlebar" min-content
+		"sidebar resizer content" auto / var(--sidebar-width) auto auto;
 	width: 100%;
 	height: 100%;
 }
@@ -127,4 +127,17 @@ button:hover {
 .flex-column {
 	display: flex;
 	flex-direction: column;
+}
+
+#resizer {
+	grid-area: resizer;
+	background-color: transparent;
+	position: relative;
+	background-color: var(--bgCol-alt);
+	width: 0.5rem;
+	cursor: col-resize;
+}
+
+#resizer:hover {
+	background-color: var(--bgCol-highlight);
 }

@@ -28,7 +28,7 @@ function createWindow() {
 		height: 720,
 		minWidth: 700,
 		minHeight: 500,
-		// titleBarStyle: "hidden",
+		titleBarStyle: "hidden",
 		trafficLightPosition: { x: 13, y: 13 },
 		webPreferences: {
 			nodeIntegration: false, // Improves security
@@ -39,7 +39,7 @@ function createWindow() {
 	});
 
 	// Hide the menu
-	// newWindow.setMenuBarVisibility(false);
+	newWindow.setMenuBarVisibility(false);
 
 	// Load the index.html of the app.
 	newWindow.loadFile(join(app.getAppPath(), "src", "index.html"));
