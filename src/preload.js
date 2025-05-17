@@ -47,6 +47,9 @@ contextBridge.exposeInMainWorld("app", {
 	onLeaveFullScreen: (callback) => {
 		ipcRenderer.on("window/onLeaveFullScreen", callback);
 	},
+	onWindowResize: (callback) => {
+		ipcRenderer.on("window/onWindowResize", callback);
+	},
 
 	isMacOs: () => ipcRenderer.invoke("isMacOs"),
 	isLinux: () => ipcRenderer.invoke("isLinux"),

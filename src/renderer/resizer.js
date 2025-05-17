@@ -83,7 +83,7 @@ app.onToggleSidebar(() => toggle());
 function toggle() {
 	if (sidebar.classList.contains("closed")) {
 		resizer.style.width = "";
-		setSidebarWidth(startWidth);
+		setSidebarWidth(clampWidthInRange(startWidth));
 	} else {
 		resizer.style.width = "0px";
 		startWidth = getSidebarWidth();
@@ -91,4 +91,27 @@ function toggle() {
 	}
 
 	sidebar.classList.toggle("closed");
+}
+
+// Register window resize event
+app.onWindowResize(() => windowResize());
+
+function windowResize() {
+	maxWidth = Math.floor((window.innerWidth / 3) * 2);
+
+	if (!sidebar.classList.contains("closed")) {
+		const currWidth = getSidebarWidth();
+
+		if (currWidth > maxWidth) {
+			setSidebarWidth(maxWidth);
+		} else if (currWidth < minWidth) {
+			setSidebarWidth(minWidth);
+		}
+	}
+}
+
+function clampWidthInRange(width) {
+	maxWidth = Math.floor((window.innerWidth / 3) * 2);
+
+	return Math.max(minWidth, Math.min(width, maxWidth));
 }

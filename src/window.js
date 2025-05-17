@@ -8,6 +8,7 @@ export function registerWindowHandlers(window, registerGlobalHandlers) {
 	window.on("unmaximize", () => window.webContents.send("window/onUnmaximize"));
 	window.on("enter-full-screen", () => window.webContents.send("window/onEnterFullScreen"));
 	window.on("leave-full-screen", () => window.webContents.send("window/onLeaveFullScreen"));
+	window.on("resize", () => window.webContents.send("window/onWindowResize"));
 
 	// App window handlers
 	ipcMain.on("window/minimize", () => {
@@ -60,5 +61,6 @@ export function registerWindowHandlers(window, registerGlobalHandlers) {
 		window.removeAllListeners("unmaximize");
 		window.removeAllListeners("enter-full-screen");
 		window.removeAllListeners("leave-full-screen");
+		window.removeAllListeners("resize");
 	});
 }
