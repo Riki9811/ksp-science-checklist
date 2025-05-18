@@ -22,18 +22,11 @@ class TablistButton {
 		this.container = document.createElement("div");
 		this.container.classList.add("tab-list-container");
 		this.container.style.display = "none";
-		this.container.style.position = "absolute";
 
 		// Populate submenu container with options
 		this.submenu.forEach((menuItem) => {
-			const optionElement = document.createElement("div");
-			optionElement.textContent = menuItem.label;
-			optionElement.classList.add("tab-list-option");
-			optionElement.addEventListener("click", () => {
-				console.log("Option selected:", menuItem);
-				this.closeMenu();
-			});
-			this.container.appendChild(optionElement);
+			if (menuItem.type && menuItem.type === "separator") this.#createSeparator();
+			else this.#createMenuItem(menuItem);
 		});
 
 		// Append elements to parent
@@ -43,6 +36,45 @@ class TablistButton {
 		// Bind handlers to this instance
 		this.boundHandleOutsideClick = this.handleOutsideClick.bind(this);
 		this.boundHandleWindowBlur = this.handleWindowBlur.bind(this);
+	}
+
+	#createSeparator() {
+		// Create main element
+		const separatorElement = document.createElement("div");
+		separatorElement.classList.add("tab-list-separator");
+		this.container.appendChild(separatorElement);
+	}
+
+	/**
+	 * @param {MenuItem} menuItem
+	 */
+	#createMenuItem(menuItem) {
+		// Create main element
+		const mainElement = document.createElement("div");
+		mainElement.dataset.commandId = menuItem.commandId;
+		mainElement.classList.add("tab-list-option");
+		mainElement.addEventListener("click", () => {
+			this.closeMenu();
+			menu.sendMenuEvent(menuItem.commandId);
+		});
+
+		// Add label
+		const labelElement = document.createElement("p");
+		labelElement.classList.add("tab-list-option-label");
+		labelElement.textContent = menuItem.label;
+		mainElement.appendChild(labelElement);
+
+		const accelerator = calculateAccelerator(menuItem);
+
+		// Add accelerator (if there is one)
+		if (accelerator) {
+			const acceleratorElement = document.createElement("p");
+			acceleratorElement.classList.add("tab-list-option-accelerator");
+			acceleratorElement.textContent = accelerator;
+			mainElement.appendChild(acceleratorElement);
+		}
+
+		this.container.appendChild(mainElement);
 	}
 
 	toggleMenu(event) {
@@ -107,6 +139,78 @@ class TablistButton {
 	handleWindowBlur() {
 		// this.closeMenu();
 	}
+}
+
+function calculateAccelerator(menuItem) {
+	/**
+	 * @type {string}
+	 */
+	let accelerator;
+
+	// Calculate accelerator from roles
+	if (menuItem.role) {
+		switch (menuItem.role.toLowerCase()) {
+			case "undo":
+				accelerator = "Ctrl+Z";
+				break;
+			case "redo":
+				accelerator = "Ctrl+Y";
+				break;
+			case "cut":
+				accelerator = "Ctrl+X";
+				break;
+			case "copy":
+				accelerator = "Ctrl+C";
+				break;
+			case "paste":
+				accelerator = "Ctrl+V";
+				break;
+			case "selectall":
+				accelerator = "Ctrl+A";
+				break;
+			case "minimize":
+				accelerator = "Ctrl+M";
+				break;
+			case "close":
+				accelerator = "Ctrl+W";
+				break;
+			case "reload":
+				accelerator = "Ctrl+R";
+				break;
+			case "forcereload":
+				accelerator = "Ctrl+Shift+R";
+				break;
+			case "toggledevtools":
+				accelerator = "Ctrl+Shift+I";
+				break;
+			case "togglefullscreen":
+				accelerator = "F11";
+				break;
+			case "resetzoom":
+				accelerator = "Ctrl+0";
+				break;
+			case "zoomin":
+				accelerator = "Ctrl++";
+				break;
+			case "zoomout":
+				accelerator = "Ctrl+-";
+				break;
+		}
+	}
+
+	// Or get it from menuItem if it has one
+	if (menuItem.accelerator) accelerator = menuItem.accelerator;
+
+	if (accelerator) {
+		accelerator = accelerator.replace(/(Cmd)|(Command)|(Or)|(\s)/gi, "");
+		accelerator = accelerator.replace(/(Control)/gi, "Ctrl");
+		accelerator = accelerator
+			.split("+")
+			.map((elem) => (elem.length === 1 ? elem.toUpperCase() : elem))
+			.join(" + ");
+	}
+
+	return accelerator;
 }
 
 export default TablistButton;

@@ -60,8 +60,4 @@ export function registerApiHandlers(window) {
 
 		return exploredFolder;
 	});
-
-	ipcMain.handle("getWindowsMenu", () => {
-		return menu.convertToWindows(menu.default);
-	});
 }

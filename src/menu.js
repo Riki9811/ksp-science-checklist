@@ -1,8 +1,8 @@
-import { app, shell } from "electron";
+import { app, shell, Menu, ipcMain, BrowserWindow } from "electron";
 
 const isMac = process.platform === "darwin";
 
-const Menu_Template = [
+const DefaultTemplate = [
 	// { role: 'appMenu' }
 	...(isMac
 		? [
@@ -26,8 +26,16 @@ const Menu_Template = [
 	{
 		label: "File",
 		submenu: [
-			{ label: "Refresh Current", click: () => console.log("refresh current"), accelerator: "CommandOrControl+r" },
-			{ label: "Refresh All", click: () => console.log("refresh all"), accelerator: "CommandOrControl+Shift+r" },
+			{
+				label: "Refresh Current",
+				click: clickRefreshCurrent,
+				...(process.env.NODE_ENV === "development" ? { accelerator: "CommandOrControl+r" } : {})
+			},
+			{
+				label: "Refresh All",
+				click: clickRefreshAll,
+				...(process.env.NODE_ENV === "development" ? { accelerator: "CommandOrControl+Shift+r" } : {})
+			},
 			isMac ? { role: "close" } : { role: "quit" }
 		]
 	},
@@ -56,13 +64,13 @@ const Menu_Template = [
 		submenu: [
 			...(process.env.NODE_ENV === "development"
 				? [
-						{ role: "reload", accelerator: "CommandOrControl+Alt+r" },
-						{ role: "forceReload", accelerator: "CommandOrControl+Alt+Shift+r" },
+						{ role: "reload", accelerator: "CommandOrControl+r" },
+						{ role: "forceReload", accelerator: "CommandOrControl+Shift+r" },
 						{ role: "toggleDevTools" },
 						{ type: "separator" }
 				  ]
 				: []),
-			{ label: "Toggle Sidebar", accelerator: "CommandOrControl+b", click: toggleSidebar },
+			{ label: "Toggle Sidebar", accelerator: "CommandOrControl+b", click: clickToggleSidebar },
 			{ type: "separator" },
 			{ role: "resetZoom" },
 			{ role: "zoomIn" },
@@ -76,8 +84,7 @@ const Menu_Template = [
 		label: "Window",
 		submenu: [
 			{ role: "minimize" },
-			{ role: "zoom" },
-			...(isMac ? [{ type: "separator" }, { role: "front" }, { type: "separator" }, { role: "window" }] : [{ role: "close" }])
+			...(isMac ? [{ role: "zoom" }, { type: "separator" }, { role: "front" }, { type: "separator" }, { role: "window" }] : [{ role: "close" }])
 		]
 	},
 	// { role: 'help' }
@@ -100,21 +107,41 @@ const Menu_Template = [
 	}
 ];
 
-function convertToWindows(template) {
-	return template.map(convertMenuItem);
+function registerMenuHandlers() {
+	ipcMain.handle("getApplicationMenu", () => {
+		const appMenu = Menu.getApplicationMenu();
+		return JSON.parse(JSON.stringify(appMenu, (key, value) => (key !== "commandsMap" && key !== "menu" ? value : undefined)));
+	});
+
+	ipcMain.on("menu-event", (event, commandId) => {
+		const item = getMenuItemByCommandId(commandId, Menu.getApplicationMenu());
+		if (item) item.click(undefined, BrowserWindow.fromWebContents(event.sender), event.sender);
+	});
 }
 
-function convertMenuItem(menu_item) {
-	if (menu_item.type && menu_item.type == "separator") return menu_item;
+function getMenuItemByCommandId(commandId, menu) {
+	if (!menu) return undefined;
 
-	const hasSubmenu = menu_item.submenu?.length >= 0;
-	const label = menu_item.role ?? menu_item.label;
-	const accelerator = menu_item.accelerator;
-	return hasSubmenu ? { label, accelerator, submenu: menu_item.submenu.map(convertMenuItem) } : { label, accelerator };
+	for (const item of menu.items) {
+		if (item.submenu) {
+			const submenuItem = getMenuItemByCommandId(commandId, item.submenu);
+			if (submenuItem) return submenuItem;
+		} else if (item.commandId === commandId) return item;
+	}
+
+	return undefined;
 }
 
-function toggleSidebar(menuItem, window, event) {
+function clickToggleSidebar(menuItem, window, event) {
 	window.webContents.send("view/onToggleSidebar");
 }
 
-export default { default: Menu_Template, convertToWindows };
+function clickRefreshCurrent(menuItem, window, event) {
+	window.webContents.send("content/refreshCurrent");
+}
+
+function clickRefreshAll(menuItem, window, event) {
+	window.webContents.send("content/refreshAll");
+}
+
+export default { template: DefaultTemplate, registerMenuHandlers };

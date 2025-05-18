@@ -7,7 +7,7 @@ async function load() {
 	const isMacOs = await app.isMacOs();
 
 	if (!isMacOs) {
-		const menuTemplate = await api.getWindowsMenu();
+		const menuTemplate = await menu.getApplicationMenu();
 
 		new WindowsTitlebar(titleBarRoot, menuTemplate);
 	} else {

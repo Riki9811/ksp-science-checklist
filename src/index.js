@@ -4,14 +4,14 @@ import { registerContentHandlers } from "./content.js";
 import { registerThemeHandlers } from "./theme.js";
 import { registerWindowHandlers } from "./window.js";
 import startup from "electron-squirrel-startup";
-import MenuTemplate from "./menu.js";
+import CustomMenu from "./menu.js";
 import { join } from "node:path";
 import "dotenv/config";
 
 /** @type {BrowserWindow} */
 var appWindow = null;
 
-const menu = Menu.buildFromTemplate(MenuTemplate.default);
+const menu = Menu.buildFromTemplate(CustomMenu.template);
 Menu.setApplicationMenu(menu);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -20,6 +20,8 @@ if (startup) {
 }
 
 function createWindow() {
+	const windowsTitleBarOverlay = { height: 40 };
+
 	// Create the browser window.
 	const newWindow = new BrowserWindow({
 		title: "KSP Science Checklist",
@@ -29,6 +31,7 @@ function createWindow() {
 		minWidth: 700,
 		minHeight: 500,
 		titleBarStyle: "hidden",
+		titleBarOverlay: process.platform === "win32" ? windowsTitleBarOverlay : false,
 		trafficLightPosition: { x: 13, y: 13 },
 		webPreferences: {
 			nodeIntegration: false, // Improves security
@@ -73,7 +76,8 @@ if (!isSingleInstance) {
 		registerApiHandlers(appWindow);
 		registerContentHandlers(appWindow);
 		registerWindowHandlers(appWindow, true);
-		registerThemeHandlers();
+		registerThemeHandlers(appWindow);
+		CustomMenu.registerMenuHandlers();
 
 		// Customize the About panel
 		app.setAboutPanelOptions({

@@ -2,6 +2,8 @@
 :root {
 	overflow: auto;
 	color-scheme: light dark obsidian;
+
+	--fallback-title-bar-height: 2.75em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,6 +18,7 @@
 		--bgCol-highlight: #383e4a;
 		--bgCol-hover: #2c313a;
 		--bgCol-toast: #0e0e11;
+		--bgCol-tablist: #1d1f23;
 
 		--borderCol-main: #181a1f;
 		--borderCol-highlight: #919295;
@@ -40,6 +43,7 @@
 		--bgCol-highlight: #cbdaf7;
 		--bgCol-hover: #eef0f6;
 		--bgCol-toast: #f2f3f8;
+		--bgCol-tablist: #f6f8ff;
 
 		--borderCol-main: #b6c1d7;
 		--borderCol-highlight: #222d44;

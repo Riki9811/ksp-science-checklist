@@ -7,8 +7,11 @@ var showingTab = document.getElementById("tab-kerbin");
 
 // Scrolls horizontally with mousewheel
 tabList.addEventListener("wheel", (event) => {
-	event.preventDefault();
+	// If we detect horizontal scrolling, do nothing
+	if (Math.abs(event.deltaX) > 0) return;
 
+	// Otherwise prevent default behaviour and scroll horizontally
+	event.preventDefault();
 	tabList.scrollBy({
 		left: event.deltaY < 0 ? -30 : 30
 	});
