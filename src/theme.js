@@ -8,7 +8,9 @@ export function registerThemeHandlers(window) {
 	});
 
 	ipcMain.on("dark-mode:setTitleBarOverlay", (_, options) => {
-		window.setTitleBarOverlay(options);
+		if (typeof window.setTitleBarOverlay === "function") {
+			window.setTitleBarOverlay(options);
+		}
 	});
 
 	ipcMain.handle("dark-mode:reset", () => (nativeTheme.themeSource = "system"));
