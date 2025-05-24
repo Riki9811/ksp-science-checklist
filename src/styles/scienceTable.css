@@ -51,3 +51,9 @@
 	background-color: var(--borderCol-main);
 	background: repeating-linear-gradient(-45deg, #f74545, #f74545 2px, var(--borderCol-main) 2px, var(--borderCol-main) 20px);
 }
+
+@media (prefers-color-scheme: light) {
+	.empty-column {
+		background: repeating-linear-gradient(-45deg, #5645f7, #5645f7 2px, var(--borderCol-main) 2px, var(--borderCol-main) 20px);
+	}
+}
