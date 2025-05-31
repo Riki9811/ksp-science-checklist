@@ -1,0 +1,57 @@
+.listmenu {
+	position: absolute;
+	list-style: none;
+	transition: opacity 250ms ease-in-out;
+	background-color: var(--bgCol-tablist);
+	box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.3);
+	border-radius: 0.5rem;
+	z-index: 1000;
+	padding: 0.3rem 0;
+	white-space: nowrap;
+}
+
+.listmenu-separator {
+	border-top: 0.1rem solid var(--bgCol-highlight);
+	margin: 0.35rem 0;
+}
+
+.listmenu-option,
+.listmenu-submenu {
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
+	padding: 0.4rem 1.5rem;
+	margin: 0 0.3rem;
+	border-radius: 0.3rem;
+}
+
+.listmenu-option:hover,
+.listmenu-submenu:hover,
+.listmenu-submenu.open {
+	background-color: var(--bgCol-highlight);
+}
+
+.listmenu-submenu {
+	position: relative;
+}
+
+.listmenu-option-title {
+	font-weight: 500;
+	color: var(--textCol);
+}
+
+.listmenu-option-shortcut,
+.listmenu-submenu-chevron {
+	color: var(--textCol-secondary);
+}
+
+.listmenu-submenu-position {
+	top: -0.3rem;
+	left: calc(100% + 0.3rem);
+}

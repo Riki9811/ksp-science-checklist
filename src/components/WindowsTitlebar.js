@@ -8,8 +8,8 @@ export default class WindowsTitlebar {
 		this.#parent = parent;
 
 		// Create left container
-		this.#leftContainer = document.createElement("div");
-		this.#leftContainer.classList.add("titlebar-left");
+		this.#leftContainer = document.createElement("ol");
+		this.#leftContainer.classList.add("titlebar-list");
 		this.#constructTabMenu(this.#leftContainer, template);
 		parent.appendChild(this.#leftContainer);
 
@@ -19,10 +19,15 @@ export default class WindowsTitlebar {
 	}
 
 	#constructTabMenu(parent, template) {
+		const liMenuImage = document.createElement("li");
+		liMenuImage.classList.add("titlebar-appImage-container");
+
 		const menuImage = document.createElement("img");
+		menuImage.classList.add("titlebar-appImage");
 		menuImage.src = "../assets/icon.png";
-		menuImage.alt = "Icon";
-		parent.appendChild(menuImage);
+
+		liMenuImage.appendChild(menuImage);
+		parent.appendChild(liMenuImage);
 
 		template.items.forEach((menuItem) => {
 			new TablistButton(parent, menuItem.label, menuItem.submenu.items);

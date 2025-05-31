@@ -29,12 +29,12 @@ const DefaultTemplate = [
 			{
 				label: "Refresh Current",
 				click: clickRefreshCurrent,
-				...(process.env.NODE_ENV === "development" ? { accelerator: "CommandOrControl+r" } : {})
+				...(process.env.NODE_ENV !== "development" ? { accelerator: "CommandOrControl+r" } : {})
 			},
 			{
 				label: "Refresh All",
 				click: clickRefreshAll,
-				...(process.env.NODE_ENV === "development" ? { accelerator: "CommandOrControl+Shift+r" } : {})
+				...(process.env.NODE_ENV !== "development" ? { accelerator: "CommandOrControl+Shift+r" } : {})
 			},
 			isMac ? { role: "close" } : { role: "quit" }
 		]
